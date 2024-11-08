@@ -3,6 +3,10 @@ First I was creating a project with Turbo Repo, but right now it does not make a
 
 This project will have more configs like husky, mock/live server and testing.
 
+- Dark/Light/System mode enabled.
+- Translations enabled (just need to translate more items)
+
+
 ## Using
 - Vite
 - React 18+
@@ -17,6 +21,17 @@ This project will have more configs like husky, mock/live server and testing.
 
 ## Vercel
 I'm doing the deploy in Vercel, bur for a few days, it will keep failing, but it will be solved.
+
+## Some fast screenshots (SO FAR)
+
+<img width="1503" alt="image" src="https://github.com/user-attachments/assets/44cce04d-f223-494f-856f-7c7d98365b09">
+
+<img width="697" alt="image" src="https://github.com/user-attachments/assets/009f7e9f-0d0f-4bcc-9434-134283269dc5">
+
+<img width="356" alt="image" src="https://github.com/user-attachments/assets/7940c7ba-3c3d-4811-af61-bba615532ac3">
+
+<img width="666" alt="image" src="https://github.com/user-attachments/assets/b931dd85-f60e-43dc-a706-8e9ed76bd57d">
+
 
 ______
 
