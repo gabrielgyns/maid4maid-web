@@ -1,3 +1,23 @@
+# ABOUT THIS SO FAR
+First I was creating a project with Turbo Repo, but right now it does not make any sense, so Im converting to React in FE and Node in BE in different repos.
+
+This project will have more configs like husky, mock/live server and testing.
+
+Using:
+- Vite
+- React 18+
+- Tailwind CSS and shadcn/ui
+- Zustand
+- React Hook Form
+- React i18next
+- React Router Dom
+- Zod
+- Axios
+- More...
+
+
+______
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
