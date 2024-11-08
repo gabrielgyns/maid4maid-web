@@ -42,11 +42,17 @@
   },
   "Login": {
     "title": "Login to CRMaidEasy",
+    "subtitle": "Enter your credentials below to access your account.",
     "username": "Username",
     "password": "Password",
-    "loginButton": "Login",
-    "subscribeLink": "Subscribe your organization",
-    "orgAlreadyRegistered": "If your organization is already registered, please ask for your Administrator to create an account for you."
+    "username_placeholder": "Enter your username",
+    "password_placeholder": "Enter your password",
+    "login_button": "Login",
+    "subscribe_link": "Subscribe your organization",
+    "org_already_registered": "If your organization is already registered, please ask for your Administrator to create an account for you.",
+    "login_success": "Login successful!",
+    "login_error": "Oops, error when logging in. Please check your credentials.",
+    "logout_success": "Logout successful!"
   },
   "Register": {
     "welcome_to": "Welcome to",

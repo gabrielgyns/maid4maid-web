@@ -42,11 +42,17 @@
   },
   "Login": {
     "title": "Iniciar sesión en CRMaidEasy",
+    "subtitle": "Ingrese sus credenciales a continuación para acceder a su cuenta.",
     "username": "Nombre de usuario",
     "password": "Contraseña",
-    "loginButton": "Iniciar sesión",
-    "subscribeLink": "Suscribir su organización",
-    "orgAlreadyRegistered": "Si su organización ya está registrada, solicite a su Administrador que cree una cuenta para usted."
+    "username_placeholder": "Ingrese su nombre de usuario",
+    "password_placeholder": "Ingrese su contraseña",
+    "login_button": "Iniciar sesión",
+    "subscribe_link": "Suscribir su organización",
+    "org_already_registered": "Si su organización ya está registrada, solicite a su Administrador que cree una cuenta para usted.",
+    "login_success": "¡Inicio de sesión exitoso!",
+    "login_error": "Vaya, error al iniciar sesión. Por favor, verifique sus credenciales.",
+    "logout_success": "¡Cierre de sesión exitoso!"
   },
   "Register": {
     "welcome_to": "Bienvenido a",

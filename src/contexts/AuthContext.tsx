@@ -5,8 +5,10 @@ import {
   useContext,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { useToast } from '@/hooks/use-toast';
 import { authService } from '@/services/auth.service';
 import { cookieService } from '@/services/cookie.service';
 import { useUserStore } from '@/stores/user.store';
@@ -22,6 +24,8 @@ const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { t } = useTranslation();
   const { fetchProfile, clearUser } = useUserStore();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +42,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         await fetchProfile();
 
+        toast({
+          title: 'Login',
+          description: t('Login.login_success'),
+        });
+
         navigate('/');
+      } catch {
+        toast({
+          title: 'Login',
+          variant: 'destructive',
+          description: t('Login.login_error'),
+        });
       } finally {
         setIsLoading(false);
       }
@@ -55,6 +70,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cookieService.clearAuthCookies();
 
       clearUser();
+
+      toast({
+        title: 'Logout',
+        description: 'Logout realizado com sucesso!',
+      });
 
       navigate('/login');
     } finally {

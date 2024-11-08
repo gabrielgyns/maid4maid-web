@@ -21,7 +21,11 @@ const LanguageSwitcher = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="default">
-          {i18n.language?.toUpperCase()}
+          {i18n.language === 'pt'
+            ? t('Common.portuguese')
+            : i18n.language === 'es'
+              ? t('Common.spanish')
+              : t('Common.english')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

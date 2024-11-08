@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
 import * as z from 'zod';
 
 import FormInput from '@/components/form/FormInput';
@@ -45,25 +44,15 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-    try {
-      await login(data);
-
-      toast.success('Login realizado com sucesso!');
-    } catch (error) {
-      toast.error('Oops. Check you credentials, please.');
-      console.error(error);
-    }
+    await login(data);
   };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="max-w-96">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">CRMaidEasy</CardTitle>
-          <CardDescription>
-            Enter your credentials below to access your account.
-          </CardDescription>
+          <CardTitle className="text-2xl">{t('Login.title')}</CardTitle>
+          <CardDescription>{t('Login.subtitle')}</CardDescription>
         </CardHeader>
 
         <CardContent className="py-0">
@@ -72,17 +61,17 @@ export default function LoginPage() {
               <FormInput
                 form={form}
                 name="username"
-                label="Username"
-                placeholder="Insert your username"
+                label={t('Login.username')}
+                placeholder={t('Login.username_placeholder')}
                 disabled={isLoading}
               />
 
               <FormInput
                 form={form}
                 name="password"
-                label="Password"
+                label={t('Login.password')}
                 type="password"
-                placeholder="Insert your password"
+                placeholder={t('Login.password_placeholder')}
                 disabled={isLoading}
               />
 
@@ -90,7 +79,7 @@ export default function LoginPage() {
                 {isLoading ? (
                   <Loader2 className="size-4 animate-spin" />
                 ) : (
-                  t('Login.loginButton')
+                  t('Login.login_button')
                 )}
               </Button>
             </form>
@@ -100,14 +89,14 @@ export default function LoginPage() {
         <CardFooter className="flex flex-col gap-4">
           <div className="mt-4 text-center text-sm">
             <Button variant="link" className="w-full" asChild size="sm">
-              <Link to="/register">{t('Login.subscribeLink')}</Link>
+              <Link to="/register">{t('Login.subscribe_link')}</Link>
             </Button>
           </div>
 
           <Separator />
 
           <div className="text-center text-sm text-muted-foreground">
-            {t('Login.orgAlreadyRegistered')}
+            {t('Login.org_already_registered')}
           </div>
 
           <Separator />
