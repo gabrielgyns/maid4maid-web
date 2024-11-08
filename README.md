@@ -3,7 +3,7 @@ First I was creating a project with Turbo Repo, but right now it does not make a
 
 This project will have more configs like husky, mock/live server and testing.
 
-Using:
+## Using
 - Vite
 - React 18+
 - Tailwind CSS and shadcn/ui
@@ -15,6 +15,8 @@ Using:
 - Axios
 - More...
 
+## Vercel
+I'm doing the deploy in Vercel, bur for a few days, it will keep failing, but it will be solved.
 
 ______
 
