@@ -24,7 +24,7 @@ const ProtectedRoute = () => {
       void fetchProfile();
       void fetchOrganization();
     }
-  }, []);
+  }, [fetchOrganization, fetchProfile, isAuthenticated]);
 
   if (isLoading) {
     return <div>Loading...</div>; // TODO: Loader Component

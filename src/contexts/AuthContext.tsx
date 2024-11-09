@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsLoading(false);
       }
     },
-    [],
+    [fetchProfile, navigate, t, toast],
   );
 
   const logout = useCallback(() => {
@@ -87,38 +87,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [clearUser, navigate, t, toast]);
 
-  const register = useCallback(async (data: RegisterData) => {
-    setIsLoading(true);
+  const register = useCallback(
+    async (data: RegisterData) => {
+      setIsLoading(true);
 
-    try {
-      await authService.register(data);
+      try {
+        await authService.register(data);
 
-      toast({
-        title: 'Register',
-        description: t('Register.register_success'),
-      });
+        toast({
+          title: 'Register',
+          description: t('Register.register_success'),
+        });
 
-      navigate('/login');
-    } catch (error: unknown) {
-      let errorMessage = t('Register.register_error');
+        navigate('/login');
+      } catch (error: unknown) {
+        let errorMessage = t('Register.register_error');
 
-      if (axios.isAxiosError(error) && error.response) {
-        // Basically... Type guard for the error response data
-        const errorData = error.response.data as ApiErrorResponse;
-        errorMessage = errorData.message || errorMessage;
+        if (axios.isAxiosError(error) && error.response) {
+          // Basically... Type guard for the error response data
+          const errorData = error.response.data as ApiErrorResponse;
+          errorMessage = errorData.message || errorMessage;
+        }
+
+        toast({
+          title: 'Register',
+          variant: 'destructive',
+          description: errorMessage,
+        });
+      } finally {
+        setIsLoading(false);
       }
-
-      toast({
-        title: 'Register',
-        variant: 'destructive',
-        description: errorMessage,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    [navigate, t, toast],
+  );
 
   return (
     <AuthContext.Provider
