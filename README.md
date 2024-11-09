@@ -1,13 +1,14 @@
 # ABOUT THIS SO FAR
+
 First I was creating a project with Turbo Repo, but right now it does not make any sense, so Im converting to React in FE and Node in BE in different repos.
 
-This project will have more configs like husky, mock/live server and testing.
+This project will have more configs like mock/live server and testing.
 
 - Dark/Light/System mode enabled.
 - Translations enabled (just need to translate more items)
 
-
 ## Using
+
 - Vite
 - React 18+
 - Tailwind CSS and shadcn/ui
@@ -17,9 +18,11 @@ This project will have more configs like husky, mock/live server and testing.
 - React Router Dom
 - Zod
 - Axios
+- Husky
 - More...
 
 ## Vercel
+
 I'm doing the deploy in Vercel, bur for a few days, it will keep failing, but it will be solved.
 
 ## Some fast screenshots (SO FAR)
@@ -32,8 +35,7 @@ I'm doing the deploy in Vercel, bur for a few days, it will keep failing, but it
 
 <img width="666" alt="image" src="https://github.com/user-attachments/assets/b931dd85-f60e-43dc-a706-8e9ed76bd57d">
 
-
-______
+---
 
 # React + TypeScript + Vite
 
@@ -59,7 +61,7 @@ export default tseslint.config({
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -68,7 +70,7 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import react from 'eslint-plugin-react';
 
 export default tseslint.config({
   // Set the react version
@@ -83,5 +85,5 @@ export default tseslint.config({
     ...react.configs.recommended.rules,
     ...react.configs['jsx-runtime'].rules,
   },
-})
+});
 ```
