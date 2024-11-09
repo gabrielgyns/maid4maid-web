@@ -11,7 +11,18 @@
     "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix --cache && prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "check:types": "tsc --noEmit",
-    "check:all": "npm run check:types && npm run lint"
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "check:all": "npm run lint && npm run check:types"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -44,6 +55,8 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@eslint/js": "^9.13.0",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.8.1",
@@ -61,6 +74,8 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^15.11.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
