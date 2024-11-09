@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const rolesEnum = z.enum(['MASTER', 'ADMIN', 'CLEANER', 'BILLING']);
+
 export const preferredFrequencyEnum = z.enum([
   'ONE_TIME',
   'EVERY_OTHER_DAY',
@@ -30,6 +32,7 @@ export const preferredDayEnum = z.enum([
   'SATURDAY',
   'SUNDAY',
 ]);
+
 export const paymentMethodEnum = z.enum([
   'CASH',
   'CHECK',

@@ -7,17 +7,24 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { useToast } from '@/hooks/use-toast';
-import { authService } from '@/services/auth.service';
+import { authService, RegisterData } from '@/services/auth.service';
 import { cookieService } from '@/services/cookie.service';
 import { useUserStore } from '@/stores/user.store';
+
+interface ApiErrorResponse {
+  message: string;
+  statusCode?: number;
+}
 
 interface AuthContextData {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (credentials: { username: string; password: string }) => Promise<void>;
   logout: () => void;
+  register: (data: RegisterData) => Promise<void>;
 }
 
 const AuthContext = createContext({} as AuthContextData);
@@ -73,10 +80,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast({
         title: 'Logout',
-        description: 'Logout realizado com sucesso!',
+        description: t('Logout.logout_success'),
       });
 
       navigate('/login');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const register = useCallback(async (data: RegisterData) => {
+    setIsLoading(true);
+
+    try {
+      await authService.register(data);
+
+      toast({
+        title: 'Register',
+        description: t('Register.register_success'),
+      });
+
+      navigate('/login');
+    } catch (error: unknown) {
+      let errorMessage = t('Register.register_error');
+
+      if (axios.isAxiosError(error) && error.response) {
+        // Basically... Type guard for the error response data
+        const errorData = error.response.data as ApiErrorResponse;
+        errorMessage = errorData.message || errorMessage;
+      }
+
+      toast({
+        title: 'Register',
+        variant: 'destructive',
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -87,6 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         login,
         logout,
+        register,
         isLoading,
         isAuthenticated: !!token,
       }}

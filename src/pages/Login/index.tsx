@@ -37,6 +37,7 @@ export default function LoginPage() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: 'onBlur',
     defaultValues: {
       username: '',
       password: '',
@@ -48,65 +49,63 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <Card className="max-w-96">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">{t('Login.title')}</CardTitle>
-          <CardDescription>{t('Login.subtitle')}</CardDescription>
-        </CardHeader>
+    <Card className="w-full sm:w-[34.375rem]">
+      <CardHeader className="text-center">
+        <CardTitle className="text-2xl">{t('Login.title')}</CardTitle>
+        <CardDescription>{t('Login.subtitle')}</CardDescription>
+      </CardHeader>
 
-        <CardContent className="py-0">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormInput
-                form={form}
-                name="username"
-                label={t('Login.username')}
-                placeholder={t('Login.username_placeholder')}
-                disabled={isLoading}
-              />
+      <CardContent className="py-0">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormInput
+              form={form}
+              name="username"
+              label={t('Login.username')}
+              placeholder={t('Login.username_placeholder')}
+              disabled={isLoading}
+            />
 
-              <FormInput
-                form={form}
-                name="password"
-                label={t('Login.password')}
-                type="password"
-                placeholder={t('Login.password_placeholder')}
-                disabled={isLoading}
-              />
+            <FormInput
+              form={form}
+              name="password"
+              label={t('Login.password')}
+              type="password"
+              placeholder={t('Login.password_placeholder')}
+              disabled={isLoading}
+            />
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  t('Login.login_button')
-                )}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-
-        <CardFooter className="flex flex-col gap-4">
-          <div className="mt-4 text-center text-sm">
-            <Button variant="link" className="w-full" asChild size="sm">
-              <Link to="/register">{t('Login.subscribe_link')}</Link>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                t('Login.login_button')
+              )}
             </Button>
-          </div>
+          </form>
+        </Form>
+      </CardContent>
 
-          <Separator />
+      <CardFooter className="flex flex-col gap-4">
+        <div className="mt-4 text-center text-sm">
+          <Button variant="link" className="w-full" asChild size="sm">
+            <Link to="/register">{t('Login.subscribe_link')}</Link>
+          </Button>
+        </div>
 
-          <div className="text-center text-sm text-muted-foreground">
-            {t('Login.org_already_registered')}
-          </div>
+        <Separator />
 
-          <Separator />
+        <div className="text-center text-sm text-muted-foreground">
+          {t('Login.org_already_registered')}
+        </div>
 
-          <div className="flex items-center justify-center gap-2">
-            <LanguageSwitcher />
-            <ThemeSwitcher />
-          </div>
-        </CardFooter>
-      </Card>
-    </div>
+        <Separator />
+
+        <div className="flex items-center justify-center gap-2">
+          <ThemeSwitcher />
+          <LanguageSwitcher />
+        </div>
+      </CardFooter>
+    </Card>
   );
 }

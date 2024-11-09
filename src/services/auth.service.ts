@@ -1,3 +1,7 @@
+import { z } from 'zod';
+
+import { formSchema } from '@/pages/Register/register.types';
+
 import { api } from './api.service';
 
 interface LoginCredentials {
@@ -9,13 +13,10 @@ interface AuthResponse {
   access_token: string;
 }
 
-interface RegisterData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  organizationName: string;
-}
+export type RegisterData = Omit<
+  z.infer<typeof formSchema>,
+  'userMaster.password_confirmation'
+>;
 
 export const authService = {
   async login(credentials: LoginCredentials) {
@@ -27,11 +28,11 @@ export const authService = {
     return data;
   },
 
-  // TODO: To be implemented
-  // today Im creating the user manually or through Organization Registration
-  // where it requires a MASTER user to create the organization
+  // Seems weird to have a register through organization endpoint,
+  // but since this is a saas (working as multi-tenant), our tenant is the organization,
+  // so we start the registration through the organization (the source of truth)
   async register(userData: RegisterData) {
-    const { data } = await api.post<AuthResponse>('/auth/register', userData);
+    const { data } = await api.post<AuthResponse>('/organizations', userData);
 
     return data;
   },
