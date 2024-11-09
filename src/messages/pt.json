@@ -71,13 +71,16 @@
     "first_name": "Nome",
     "last_name": "Sobrenome",
     "user_email": "Email",
+    "user_phone": "Telefone",
     "login": "Login",
     "password": "Senha",
     "confirm_password": "Confirmar Senha",
     "registering": "Registrando...",
     "register": "Registrar",
-    "already_have_account": "Já possui uma conta?",
-    "log_in": "Entrar"
+    "registration": "Registro",
+    "already_have_account": "Já possui uma conta? Entrar",
+    "register_success": "Registro bem-sucedido!",
+    "register_error": "Ops, erro ao registrar. Por favor, verifique suas informações."
   },
   "Theme": {
     "theme": "Tema",
