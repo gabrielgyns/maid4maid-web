@@ -7,6 +7,12 @@ This project will have more configs like mock/live server and testing.
 - Dark/Light/System mode enabled.
 - Translations enabled (just need to translate more items)
 
+### Want to test it?
+Front and Back are deployed in cloud and we can test it.
+**link**: https://app.crmaideasy.com
+**login**: gabriel
+**pass**: 12345678
+
 ## Using
 
 - Vite
