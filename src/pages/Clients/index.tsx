@@ -1,7 +1,9 @@
+import { ClientsList } from './ClientsList';
+
 const Clients = () => {
   return (
     <div>
-      <h1>Clients</h1>
+      <ClientsList />
     </div>
   );
 };

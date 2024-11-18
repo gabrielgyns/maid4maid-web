@@ -4,6 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import AppLayout from '@/components/layouts/app-layout';
 import { useAuth } from '@/contexts/AuthContext';
 import Clients from '@/pages/Clients';
+import { ClientForm } from '@/pages/Clients/ClientForm';
 import Dashboard from '@/pages/Dashboard';
 import { RouteMetadata } from '@/schemas/route.types';
 import { useOrganizationStore } from '@/stores/organization.store';
@@ -55,14 +56,43 @@ export const protectedRoutes = [
           },
           {
             path: 'clients',
-            element: <Clients />,
-            handle: {
-              title: 'Clients',
-              breadcrumbs: [
-                { label: 'Dashboard', path: '/' },
-                { label: 'Clients' },
-              ],
-            } as RouteMetadata,
+            children: [
+              {
+                path: '',
+                element: <Clients />,
+                handle: {
+                  title: 'Clients',
+                  breadcrumbs: [
+                    { label: 'Dashboard', path: '/' },
+                    { label: 'Clients' },
+                  ],
+                } as RouteMetadata,
+              },
+              {
+                path: 'new',
+                element: <ClientForm />,
+                handle: {
+                  title: 'Clients',
+                  breadcrumbs: [
+                    { label: 'Dashboard', path: '/' },
+                    { label: 'Clients', path: '/clients' },
+                    { label: 'New Client' },
+                  ],
+                } as RouteMetadata,
+              },
+              {
+                path: 'edit/:id',
+                element: <ClientForm />,
+                handle: {
+                  title: 'Clients',
+                  breadcrumbs: [
+                    { label: 'Dashboard', path: '/' },
+                    { label: 'Clients', path: '/clients' },
+                    { label: 'Edit Client' },
+                  ],
+                } as RouteMetadata,
+              },
+            ],
           },
           // {
           // 	path: "jobs",

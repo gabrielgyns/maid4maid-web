@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useMatches } from 'react-router-dom';
+import { Link, Outlet, useMatches } from 'react-router-dom';
 
 import { RouteMetadata } from '@/schemas/route.types';
 
@@ -41,8 +41,8 @@ const AppLayout = () => {
 
                     <BreadcrumbItem>
                       {item.path ? (
-                        <BreadcrumbLink href={item.path}>
-                          {item.label}
+                        <BreadcrumbLink asChild>
+                          <Link to={item.path}>{item.label}</Link>
                         </BreadcrumbLink>
                       ) : (
                         <BreadcrumbPage>{item.label}</BreadcrumbPage>
