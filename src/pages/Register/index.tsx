@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
 
-import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import LanguageSwitcher from '@/components/language-switcher';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -19,16 +19,16 @@ import {
 } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth-context';
 
-import { MasterUserForm } from './MasterUserForm';
-import { OrganizationForm } from './OrganizationForm';
 import {
   formSchema,
   registrationOrgSchema,
   registrationUserSchema,
-} from './register.types';
-import { StepsIndicator } from './StepsIndicator';
+} from '../../schemas/register.types';
+import { MasterUserForm } from './master-user-form';
+import { OrganizationForm } from './organization-form';
+import { StepsIndicator } from './steps-indicator';
 
 type FormData = z.infer<typeof formSchema>;
 

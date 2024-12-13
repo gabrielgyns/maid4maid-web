@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { rolesEnum } from './common';
+import { rolesEnum } from './commons';
 
 export interface UserProfile {
   id: string;

@@ -1,4 +1,4 @@
-import { UserProfile } from '@/schemas/user.types';
+import { User, UserProfile } from '@/schemas/user.types';
 
 import { api } from './api.service';
 
@@ -16,5 +16,11 @@ export const usersService = {
       ...data,
       full_name: `${data.first_name} ${data.last_name}`,
     };
+  },
+
+  async getUsers() {
+    const { data } = await api.get<User[]>('/users');
+
+    return data;
   },
 };

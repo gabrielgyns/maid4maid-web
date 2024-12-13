@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import { AuthLayoutFooter } from './AuthLayoutFooter';
+import { AuthLayoutFooter } from './auth-layout-footer';
 
 export const AuthLayout = () => {
   return (

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { chargeByEnum, entryMethodEnum } from './common';
+import { chargeByEnum, entryMethodEnum } from './commons';
 
 export const addressTypeSchema = z.object({
   name: z.string(),

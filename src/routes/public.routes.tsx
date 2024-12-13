@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
 import { AuthLayout } from '@/components/layouts/auth-layout';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth-context';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 // import { ForgotPassword } from "@/pages/auth/forgot-password";

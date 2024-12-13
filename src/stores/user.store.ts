@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { UserProfile } from '@/schemas/user.types';
-import { usersService } from '@/services/users.service';
+import { usersService } from '@/services/user.service';
 
 export interface UserState {
   user: UserProfile | null;

@@ -1,7 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import FormInput from '@/components/form/FormInput';
+import FormInput from '@/components/form/form-input';
 
 type MasterUserFormProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

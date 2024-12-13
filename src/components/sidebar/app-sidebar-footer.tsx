@@ -7,9 +7,9 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-import { useAuth } from '@/contexts/AuthContext';
-import { getInitialsFromName } from '@/lib/utils';
+import { useAuth } from '@/contexts/auth-context';
 import { useUserStore } from '@/stores/user.store';
+import { getInitialsFromName } from '@/utils';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {

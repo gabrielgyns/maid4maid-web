@@ -1,5 +1,4 @@
-// src/components/FloatingActionBar.tsx
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils';
 
 interface FloatingActionBarProps extends React.HTMLAttributes<HTMLDivElement> {
   show?: boolean;

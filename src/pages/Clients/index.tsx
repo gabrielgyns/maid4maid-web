@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { Loader2, PlusCircle } from 'lucide-react';
 
-import { DataTable } from '@/components/DataTable';
-import { ActionsCell } from '@/components/DataTable/ActionsCell';
+import { DataTable } from '@/components/data-table';
+import { ActionsCell } from '@/components/data-table/actions-cell';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { useClients, useDeleteClient } from '@/hooks/queries/useClients';
-import { getFullAddress } from '@/lib/utils';
+import { useClients, useDeleteClient } from '@/hooks/queries/use-clients';
 import { Client } from '@/schemas/client.types';
+import { getFullAddress } from '@/utils';
 
 type RowType = {
   row: {

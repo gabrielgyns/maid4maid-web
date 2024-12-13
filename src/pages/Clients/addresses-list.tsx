@@ -1,12 +1,12 @@
 import { Pencil, Trash2 } from 'lucide-react';
 
 import Badge from '@/components/Badge';
-import ConfirmDialog from '@/components/ConfirmDialog';
+import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Address } from '@/schemas/address.types';
 
-import AddressForm from './AddressForm';
+import AddressForm from './address-form';
 
 interface AddressesListProps {
   addresses: Address[];

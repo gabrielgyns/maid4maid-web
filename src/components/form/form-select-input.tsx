@@ -5,7 +5,7 @@
 
 import { UseFormReturn } from 'react-hook-form';
 
-import { transformConstant } from '@/lib/utils';
+import { transformConstant } from '@/utils';
 
 import {
   FormControl,

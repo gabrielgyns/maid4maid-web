@@ -5,7 +5,7 @@ import {
   paymentMethodEnum,
   preferredDayEnum,
   preferredFrequencyEnum,
-} from './common';
+} from './commons';
 
 export const clientSchema = z.object({
   id: z.string().uuid().optional(),

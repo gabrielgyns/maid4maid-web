@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import ConfirmDialog from '../ConfirmDialog';
+import ConfirmDialog from '../confirm-dialog';
 
 type Row<T> = { original: T };
 

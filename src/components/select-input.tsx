@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { transformConstant } from '@/lib/utils';
+import { transformConstant } from '@/utils';
 
 import { Label } from './ui/label';
 import {

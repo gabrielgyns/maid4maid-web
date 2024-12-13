@@ -3,9 +3,9 @@ import { Link, Outlet, useMatches } from 'react-router-dom';
 
 import { RouteMetadata } from '@/schemas/route.types';
 
-import LanguageSwitcher from '../LanguageSwitcher';
+import LanguageSwitcher from '../language-switcher';
 import { AppSidebar } from '../sidebar/app-sidebar';
-import { ThemeSwitcher } from '../ThemeSwitcher';
+import { ThemeSwitcher } from '../theme-switcher';
 import {
   Breadcrumb,
   BreadcrumbItem,

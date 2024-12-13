@@ -15,28 +15,28 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-import { FloatingActionBar } from '@/components/FloatingActionBar';
-import { DatePickerInput } from '@/components/form/DatePickerInput';
-import FormInput from '@/components/form/FormInput';
-import FormSelectInput from '@/components/form/FormSelectInput';
-import FormSwitchInput from '@/components/form/FormSwitchInput';
-import FormTextareaInput from '@/components/form/FormTextareaInput';
+import { FloatingActionBar } from '@/components/floating-action-bar';
+import { DatePickerInput } from '@/components/form/date-picker-input';
+import FormInput from '@/components/form/form-input';
+import FormSelectInput from '@/components/form/form-select-input';
+import FormSwitchInput from '@/components/form/form-switch-input';
+import FormTextareaInput from '@/components/form/form-textarea-input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
-import { useAddresses } from '@/hooks/queries/useAddresses';
-import { cn } from '@/lib/utils';
+import { useAddresses } from '@/hooks/queries/use-addresses';
 import { Address } from '@/schemas/address.types';
 import { Client, clientFormSchema } from '@/schemas/client.types';
 import {
   paymentMethodEnum,
   preferredDayEnum,
   preferredFrequencyEnum,
-} from '@/schemas/common';
+} from '@/schemas/commons';
+import { cn } from '@/utils';
 
-import ConfirmDialog from '../../components/ConfirmDialog';
-import { AddressesList } from './AddressesList';
-import AddressForm from './AddressForm';
+import ConfirmDialog from '../../components/confirm-dialog';
+import AddressForm from './address-form';
+import { AddressesList } from './addresses-list';
 
 type FormData = z.infer<typeof clientFormSchema>;
 

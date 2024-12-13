@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import AppLayout from '@/components/layouts/app-layout';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth-context';
 import Clients from '@/pages/Clients';
-import ClientsDetails from '@/pages/Clients/ClientDetails';
+import ClientsDetails from '@/pages/Clients/client-details';
 import Dashboard from '@/pages/Dashboard';
 import Users from '@/pages/Users';
 import { RouteMetadata } from '@/schemas/route.types';

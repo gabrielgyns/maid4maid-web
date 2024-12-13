@@ -5,10 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { MapPinHouse } from 'lucide-react';
 import { z } from 'zod';
 
-import FormInput from '@/components/form/FormInput';
-import FormSelectInput from '@/components/form/FormSelectInput';
-import FormSwitchInput from '@/components/form/FormSwitchInput';
-import FormTextareaInput from '@/components/form/FormTextareaInput';
+import FormInput from '@/components/form/form-input';
+import FormSelectInput from '@/components/form/form-select-input';
+import FormSwitchInput from '@/components/form/form-switch-input';
+import FormTextareaInput from '@/components/form/form-textarea-input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -20,9 +20,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useAddresses } from '@/hooks/queries/useAddresses';
+import { useAddresses } from '@/hooks/queries/use-addresses';
 import { Address, addressSchema } from '@/schemas/address.types';
-import { chargeByEnum, entryMethodEnum } from '@/schemas/common';
+import { chargeByEnum, entryMethodEnum } from '@/schemas/commons';
 
 interface AddressFormProps {
   contentTrigger: React.ReactNode;

@@ -1,17 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useAddresses } from '@/hooks/queries/useAddresses';
+import { useAddresses } from '@/hooks/queries/use-addresses';
 import {
   useClient,
   useCreateClient,
   useDeleteClient,
   useUpdateClient,
-} from '@/hooks/queries/useClients';
+} from '@/hooks/queries/use-clients';
 import { useToast } from '@/hooks/use-toast';
 import { Address } from '@/schemas/address.types';
 import { Client } from '@/schemas/client.types';
 
-import { ClientForm } from './ClientForm';
+import { ClientForm } from './client-form';
 
 // I could be importing the ClientForm directly instead of have a ClientDetails component
 // but I think separating the concerns is better for now.

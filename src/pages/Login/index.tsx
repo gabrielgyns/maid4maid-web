@@ -6,9 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import * as z from 'zod';
 
-import FormInput from '@/components/form/FormInput';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import FormInput from '@/components/form/form-input';
+import LanguageSwitcher from '@/components/language-switcher';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth-context';
 
 const formSchema = z.object({
   username: z.string().min(1, 'Por favor insira um username válido.'),

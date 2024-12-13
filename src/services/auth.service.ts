@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { formSchema } from '@/pages/Register/register.types';
+import { formSchema } from '@/schemas/register.types';
 
 import { api } from './api.service';
 
