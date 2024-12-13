@@ -15,14 +15,18 @@ export const clientService = {
     return data;
   },
 
-  async createClient(clientData: Client) {
-    const { data } = await api.post<Client>('/clients/:id', clientData);
+  async createClient(clientData: Partial<Client>) {
+    // or just Client
+    const { data } = await api.post<Client>('/clients', clientData);
 
     return data;
   },
 
-  async updateClientById(clientId: string, clientData: Partial<Client>) {
-    const { data } = await api.put<Client>(`/clients/${clientId}`, clientData);
+  async updateClientById(clientData: Partial<Client>) {
+    const { data } = await api.put<Client>(
+      `/clients/${clientData.id}`,
+      clientData,
+    );
 
     return data;
   },

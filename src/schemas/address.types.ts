@@ -15,6 +15,8 @@ export type AddressType = z.infer<typeof addressTypeSchema>;
 
 export const addressSchema = z.object({
   id: z.string().uuid().optional(),
+  tempId: z.string().uuid().optional(), // Only used in Frontend for new addresses
+  clientId: z.string().uuid().optional(),
   addressTypeId: z.string().uuid().optional(),
   reference: z.string().optional(),
   street: z.string(),
@@ -24,7 +26,10 @@ export const addressSchema = z.object({
   zipCode: z.string(),
   isDefault: z.boolean().default(false),
   isBilling: z.boolean().default(false),
-  chargeAmount: z.number().optional(),
+  chargeAmount: z
+    .string()
+    .transform((value) => Number(value))
+    .optional(),
   chargeBy: chargeByEnum.optional(),
   entryMethod: entryMethodEnum.optional(),
   entryCode: z.string().optional(),

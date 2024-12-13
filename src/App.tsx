@@ -9,7 +9,7 @@ import { QueryProvider } from './providers/query-provider';
 function App() {
   return (
     <QueryProvider>
-      <ThemeProvider defaultTheme="system" storageKey="@CRMaidEasy:theme">
+      <ThemeProvider defaultTheme="system" storageKey="@Maid4Maid:theme">
         <RouterProvider router={router} />
         <Toaster />
       </ThemeProvider>

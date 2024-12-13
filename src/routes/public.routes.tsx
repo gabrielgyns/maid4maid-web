@@ -1,5 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
+import CRMCalendar from '@/components/CalendarTest';
+import { Clients } from '@/components/ClientBoltTest';
 import { AuthLayout } from '@/components/layouts/auth-layout';
 import { useAuth } from '@/contexts/AuthContext';
 import Login from '@/pages/Login';
@@ -38,6 +40,7 @@ export const publicRoutes = [
           </PublicRoute>
         ),
       },
+
       // {
       // 	path: "forgot-password",
       // 	element: (
@@ -55,5 +58,17 @@ export const publicRoutes = [
       // 	),
       // },
     ],
+  },
+  {
+    path: 'calendar-claude',
+    element: <CRMCalendar />,
+  },
+  {
+    path: 'client-bolt',
+    element: (
+      <div className="p-24">
+        <Clients />
+      </div>
+    ),
   },
 ];

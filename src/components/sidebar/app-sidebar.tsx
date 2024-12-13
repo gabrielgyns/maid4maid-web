@@ -1,4 +1,5 @@
-import { Calendar, Home, Settings,Users } from 'lucide-react';
+// TODO: Maybe in the future this should come from backend
+import { Calendar, Contact, Home, Settings, Users } from 'lucide-react';
 
 import { Sidebar } from '@/components/ui/sidebar';
 
@@ -6,7 +7,6 @@ import { AppSidebarContent } from './app-sidebar-content';
 import { AppSidebarFooter } from './app-sidebar-footer';
 import { AppSidebarHeader } from './app-sidebar-header';
 
-// TODO: Maybe in the future this should come from backend
 const items = [
   {
     title: 'Home',
@@ -21,6 +21,11 @@ const items = [
   {
     title: 'Clients',
     url: '/clients',
+    icon: Contact,
+  },
+  {
+    title: 'Users',
+    url: '/users',
     icon: Users,
   },
   {

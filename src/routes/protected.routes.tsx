@@ -4,8 +4,9 @@ import { Navigate, Outlet } from 'react-router-dom';
 import AppLayout from '@/components/layouts/app-layout';
 import { useAuth } from '@/contexts/AuthContext';
 import Clients from '@/pages/Clients';
-import { ClientForm } from '@/pages/Clients/ClientForm';
+import ClientsDetails from '@/pages/Clients/ClientDetails';
 import Dashboard from '@/pages/Dashboard';
+import Users from '@/pages/Users';
 import { RouteMetadata } from '@/schemas/route.types';
 import { useOrganizationStore } from '@/stores/organization.store';
 import { useUserStore } from '@/stores/user.store';
@@ -38,6 +39,82 @@ const ProtectedRoute = () => {
   return <Outlet />;
 };
 
+const clientsRoutes = {
+  path: 'clients',
+  children: [
+    {
+      path: '',
+      element: <Clients />,
+      handle: {
+        title: 'Clients',
+        breadcrumbs: [{ label: 'Dashboard', path: '/' }, { label: 'Clients' }],
+      } as RouteMetadata,
+    },
+    {
+      path: 'new',
+      element: <ClientsDetails />,
+      handle: {
+        title: 'Clients',
+        breadcrumbs: [
+          { label: 'Dashboard', path: '/' },
+          { label: 'Clients', path: '/clients' },
+          { label: 'New Client' },
+        ],
+      } as RouteMetadata,
+    },
+    {
+      path: 'edit/:id',
+      element: <ClientsDetails />,
+      handle: {
+        title: 'Clients',
+        breadcrumbs: [
+          { label: 'Dashboard', path: '/' },
+          { label: 'Clients', path: '/clients' },
+          { label: 'Edit Client' },
+        ],
+      } as RouteMetadata,
+    },
+  ],
+};
+
+const userRoutes = {
+  path: 'users',
+  children: [
+    {
+      path: '',
+      element: <Users />,
+      handle: {
+        title: 'Users',
+        breadcrumbs: [{ label: 'Dashboard', path: '/' }, { label: 'Users' }],
+      } as RouteMetadata,
+    },
+    // {
+    //   path: 'new',
+    //   element: <ClientsDetails />,
+    //   handle: {
+    //     title: 'Clients',
+    //     breadcrumbs: [
+    //       { label: 'Dashboard', path: '/' },
+    //       { label: 'Clients', path: '/clients' },
+    //       { label: 'New Client' },
+    //     ],
+    //   } as RouteMetadata,
+    // },
+    // {
+    //   path: 'edit/:id',
+    //   element: <ClientsDetails />,
+    //   handle: {
+    //     title: 'Clients',
+    //     breadcrumbs: [
+    //       { label: 'Dashboard', path: '/' },
+    //       { label: 'Clients', path: '/clients' },
+    //       { label: 'Edit Client' },
+    //     ],
+    //   } as RouteMetadata,
+    // },
+  ],
+};
+
 export const protectedRoutes = [
   {
     path: '/',
@@ -54,46 +131,8 @@ export const protectedRoutes = [
               breadcrumbs: [{ label: 'Dashboard' }],
             } as RouteMetadata,
           },
-          {
-            path: 'clients',
-            children: [
-              {
-                path: '',
-                element: <Clients />,
-                handle: {
-                  title: 'Clients',
-                  breadcrumbs: [
-                    { label: 'Dashboard', path: '/' },
-                    { label: 'Clients' },
-                  ],
-                } as RouteMetadata,
-              },
-              {
-                path: 'new',
-                element: <ClientForm />,
-                handle: {
-                  title: 'Clients',
-                  breadcrumbs: [
-                    { label: 'Dashboard', path: '/' },
-                    { label: 'Clients', path: '/clients' },
-                    { label: 'New Client' },
-                  ],
-                } as RouteMetadata,
-              },
-              {
-                path: 'edit/:id',
-                element: <ClientForm />,
-                handle: {
-                  title: 'Clients',
-                  breadcrumbs: [
-                    { label: 'Dashboard', path: '/' },
-                    { label: 'Clients', path: '/clients' },
-                    { label: 'Edit Client' },
-                  ],
-                } as RouteMetadata,
-              },
-            ],
-          },
+          clientsRoutes,
+          userRoutes,
           // {
           // 	path: "jobs",
           // 	element: <Jobs />,

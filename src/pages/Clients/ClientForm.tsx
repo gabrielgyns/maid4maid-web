@@ -1,204 +1,298 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-// import { Dialog } from "@/components/ui/dialog";
-
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   CreditCard,
+  Loader2,
   MapPin,
   NotepadText,
   PlusCircle,
   User,
+  UserPen,
 } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-import { ActionsCell } from '@/components/DataTable/ActionsCell';
+import { FloatingActionBar } from '@/components/FloatingActionBar';
 import { DatePickerInput } from '@/components/form/DatePickerInput';
 import FormInput from '@/components/form/FormInput';
 import FormSelectInput from '@/components/form/FormSelectInput';
 import FormSwitchInput from '@/components/form/FormSwitchInput';
 import FormTextareaInput from '@/components/form/FormTextareaInput';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
-import { Separator } from '@/components/ui/separator';
-import { TableCell, TableRow } from '@/components/ui/table';
-import { useClient } from '@/hooks/queries';
+import { useAddresses } from '@/hooks/queries/useAddresses';
+import { cn } from '@/lib/utils';
 import { Address } from '@/schemas/address.types';
-import { clientSchema } from '@/schemas/client.types';
+import { Client, clientFormSchema } from '@/schemas/client.types';
 import {
   paymentMethodEnum,
   preferredDayEnum,
   preferredFrequencyEnum,
 } from '@/schemas/common';
 
-type FormData = z.infer<typeof clientSchema>;
+import ConfirmDialog from '../../components/ConfirmDialog';
+import { AddressesList } from './AddressesList';
+import AddressForm from './AddressForm';
 
-export function ClientForm() {
-  const { id } = useParams();
+type FormData = z.infer<typeof clientFormSchema>;
 
-  const {
-    data: client,
-    // isLoading,
-    // error,
-  } = useClient(id);
+interface ClientFormProps {
+  client?: Client;
+  addresses?: Address[];
+  isLoading?: boolean;
+  onSubmit: (data: FormData) => Promise<void>;
+  onDelete?: (clientId: string) => Promise<void>;
+}
 
-  console.log('GSS client', client);
+export function ClientForm({
+  client,
+  addresses,
+  isLoading = false,
+  onSubmit,
+  onDelete,
+}: ClientFormProps) {
+  const navigate = useNavigate();
+
+  const [newAddresses, setNewAddresses] = useState<Address[]>([]);
+
+  const { deleteAddressById } = useAddresses(); // Im using in here, but actually should have come from the parent component.
 
   const form = useForm<FormData>({
-    resolver: zodResolver(clientSchema),
+    resolver: zodResolver(clientFormSchema),
     mode: 'onBlur',
+    values: client,
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    // await register(data);
-    console.log('GSS data', data);
+  const handleUpdateNewClientAddress = (address: Address) => {
+    const newAddressessFiltered = newAddresses.filter(
+      (addr) => addr.tempId !== address.tempId,
+    );
+
+    console.log('GSS newAddressessFiltered', newAddressessFiltered);
+    console.log('GSS new', [...newAddressessFiltered, address]);
+
+    setNewAddresses([...newAddressessFiltered, address]);
   };
 
-  const renderTableRow = (
-    item: Address,
-    newAddress = false,
-    index?: number,
-  ) => (
-    <TableRow
-      className={`w-full ${newAddress && 'bg-primary-foreground'}`}
-      key={item.id || index}
-    >
-      <TableCell className="w-[30%] text-center">{item.street}</TableCell>
-      <TableCell className="w-[30%] text-center">{item.complement}</TableCell>
-      <TableCell className="w-[15%] text-center">{item.city}</TableCell>
-      <TableCell className="w-[10%] text-center">{item.state}</TableCell>
-      <TableCell className="w-[10%] text-center">{item.zipCode}</TableCell>
-      <TableCell className="w-[5%] text-center">
-        <ActionsCell
-          onEdit={() => console.log(item)}
-          onDelete={() => console.log((item?.id || index) as string)}
-          row={{
-            original: undefined,
-          }}
-        />
-      </TableCell>
-    </TableRow>
-  );
+  const handleDeleteAddress = async (addressId: string) => {
+    if (client?.id) {
+      await deleteAddressById.mutateAsync({ addressId, clientId: client.id });
+    } else {
+      setNewAddresses((prevAddresses) =>
+        prevAddresses.filter((address) => address.tempId !== addressId),
+      );
+    }
+  };
+
+  const handleFormSubmit = async (data: FormData) => {
+    if (client?.id) {
+      await onSubmit(data);
+    } else {
+      await onSubmit({ ...data, addresses: newAddresses });
+    }
+  };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="m-4 grid grid-cols-2 gap-8"
-      >
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
-            <User className="h-5 w-5" />
-            Personal Information
-          </h3>
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleFormSubmit)}
+          className="mb-16 flex gap-4 px-10"
+        >
+          <div className="flex-1 space-y-4">
+            <h3 className="flex items-center gap-2 text-3xl font-semibold">
+              <UserPen className="h-7 w-7" />
+              Client Information
+            </h3>
 
-          <div className="grid grid-cols-2 gap-4">
-            <FormInput form={form} label="First name" name="firstName" />
-            <FormInput form={form} label="Last name" name="lastName" />
+            {/* Personal Information */}
+            <Card className="space-y-4 p-4">
+              <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
+                <User className="h-5 w-5" />
+                Personal Information
+              </h3>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormInput form={form} label="First name" name="firstName" />
+                <FormInput form={form} label="Last name" name="lastName" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormInput
+                  form={form}
+                  label="Email"
+                  name="email"
+                  type="email"
+                />
+
+                <DatePickerInput
+                  form={form}
+                  label="Birth date"
+                  name="birthday"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormInput form={form} label="Primary Phone" name="phone1" />
+                <FormInput form={form} label="Secondary Phone" name="phone2" />
+              </div>
+            </Card>
+
+            {/* Service Preferences */}
+            <Card className="space-y-4 p-4">
+              <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
+                <NotepadText className="h-5 w-5" />
+                Service Preferences
+              </h3>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormSelectInput
+                  form={form}
+                  label="Preferred Frequency"
+                  name="preferredFrequency"
+                  options={Object.values(preferredFrequencyEnum.Values)}
+                />
+
+                <FormSelectInput
+                  form={form}
+                  label="Preferred Day"
+                  name="preferredDay"
+                  options={Object.values(preferredDayEnum.Values)}
+                />
+              </div>
+            </Card>
+
+            {/* Payment Information */}
+            <Card className="space-y-4 p-4">
+              <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
+                <CreditCard className="h-5 w-5" />
+                Payment Information
+              </h3>
+
+              <FormSelectInput
+                form={form}
+                label="Preferred Payment Method"
+                name="preferredPaymentMethod"
+                options={Object.values(paymentMethodEnum.Values)}
+              />
+
+              <FormTextareaInput
+                form={form}
+                label="Other details"
+                name="paymentInformation"
+              />
+            </Card>
+
+            {/* Additional Information */}
+            <Card className="space-y-4 p-4">
+              <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
+                <PlusCircle className="h-5 w-5" />
+                Additional Information
+              </h3>
+
+              <div className="grid grid-cols-2 gap-4">
+                <DatePickerInput
+                  form={form}
+                  label="Client since"
+                  name="clientSince"
+                />
+
+                <FormInput form={form} label="Source" name="source" />
+              </div>
+
+              <FormTextareaInput
+                form={form}
+                label="Other information"
+                name="otherInformation"
+              />
+
+              <FormSwitchInput
+                form={form}
+                name="isActive"
+                label="Is client active?"
+                formDescription="If the client is not active, it will not be able to schedule services."
+              />
+            </Card>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <FormInput form={form} label="Email" name="email" type="email" />
+          {/* Addresses Informations */}
+          <div className="flex-1">
+            <div className="flex items-center justify-between pb-4">
+              <h3 className="flex items-center gap-2 text-3xl font-semibold">
+                <MapPin className="h-7 w-7" />
+                Address Information
+              </h3>
 
-            <DatePickerInput form={form} label="Birth date" name="birthday" />
-          </div>
+              <AddressForm
+                contentTrigger={
+                  <Button size="sm" variant="outline">
+                    <PlusCircle />
+                    New Address
+                  </Button>
+                }
+                clientId={client?.id}
+                onSubmitNewClientAddress={(newAddress: Address) =>
+                  setNewAddresses((prevAddresses) => [
+                    ...prevAddresses,
+                    { ...newAddress, tempId: uuidv4() },
+                  ])
+                }
+              />
+            </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <FormInput form={form} label="Primary Phone" name="phone1" />
-            <FormInput form={form} label="Secondary Phone" name="phone2" />
-          </div>
-          <Separator />
-        </div>
-
-        {/* Address Information */}
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
-            <MapPin className="h-5 w-5" />
-            Address Information
-          </h3>
-
-          {renderTableRow(client?.addresses[0] || ({} as Address), false, 0)}
-          <Separator />
-        </div>
-
-        {/* Service Preferences */}
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
-            <NotepadText className="h-5 w-5" />
-            Service Preferences
-          </h3>
-
-          <div className="grid grid-cols-2 gap-4">
-            <FormSelectInput
-              form={form}
-              label="Preferred Frequency"
-              name="preferredFrequency"
-              options={Object.values(preferredFrequencyEnum.Values)}
+            <AddressesList
+              addresses={(client?.id ? addresses : newAddresses) || []}
+              clientId={client?.id}
+              onEditAddress={handleUpdateNewClientAddress}
+              onDeleteAddress={handleDeleteAddress}
             />
-
-            <FormSelectInput
-              form={form}
-              label="Preferred Day"
-              name="preferredDay"
-              options={Object.values(preferredDayEnum.Values)}
-            />
-          </div>
-          <Separator />
-        </div>
-
-        {/* Payment Information */}
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
-            <CreditCard className="h-5 w-5" />
-            Payment Information
-          </h3>
-
-          <FormSelectInput
-            form={form}
-            label="Preferred Payment Method"
-            name="preferredPaymentMethod"
-            options={Object.values(paymentMethodEnum.Values)}
-          />
-
-          <FormTextareaInput
-            form={form}
-            label="Other details"
-            name="paymentInformation"
-          />
-          <Separator />
-        </div>
-
-        {/* Additional Information */}
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
-            <PlusCircle className="h-5 w-5" />
-            Additional Information
-          </h3>
-
-          <div className="grid grid-cols-2 gap-4">
-            <DatePickerInput
-              form={form}
-              label="Client since"
-              name="clientSince"
-            />
-
-            <FormInput form={form} label="Source" name="source" />
           </div>
 
-          <FormTextareaInput
-            form={form}
-            label="Other information"
-            name="otherInformation"
-          />
+          <FloatingActionBar>
+            <div
+              className={cn('flex flex-1 justify-between', {
+                'justify-end': !client?.id,
+              })}
+            >
+              {client?.id && (
+                <ConfirmDialog
+                  onConfirm={() => onDelete && onDelete(client.id as string)}
+                  title={'Delete Client'}
+                  description="Are you sure you want to delete this client? This action cannot be undone."
+                >
+                  <Button size="sm" variant="destructive">
+                    Delete Client
+                  </Button>
+                </ConfirmDialog>
+              )}
 
-          <FormSwitchInput
-            form={form}
-            name="isActive"
-            label="Is client active?"
-            formDescription="If the client is not active, it will not be able to schedule services."
-          />
-        </div>
-      </form>
-    </Form>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    form.reset();
+                    navigate('/clients');
+                  }}
+                >
+                  Cancel
+                </Button>
+
+                <Button size="sm" type="submit" disabled={isLoading}>
+                  Save Changes
+                  {isLoading && (
+                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          </FloatingActionBar>
+        </form>
+      </Form>
+    </>
   );
 }

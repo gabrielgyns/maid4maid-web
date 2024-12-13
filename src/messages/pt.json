@@ -21,7 +21,8 @@
     "rows_per_page": "Linhas por página",
     "search": "Pesquisar",
     "name": "Nome",
-    "phone": "Telefone"
+    "phone": "Telefone",
+    "cancel": "Cancelar"
   },
   "Titles": {
     "Dashboard": "Dashboard",
@@ -41,7 +42,7 @@
     "Job": "Trabalho"
   },
   "Login": {
-    "title": "Iniciar sessão em CRMaidEasy",
+    "title": "Iniciar sessão em Maid4Maid",
     "subtitle": "Insira suas credenciais abaixo para acessar sua conta.",
     "username": "Usuário",
     "password": "Senha",

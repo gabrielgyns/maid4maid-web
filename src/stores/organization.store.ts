@@ -52,7 +52,7 @@ export const useOrganizationStore = create<OrganizationState>()(
       },
     }),
     {
-      name: '@CRMaidEasy:organization',
+      name: '@Maid4Maid:Organization',
       skipHydration: true,
     },
   ),

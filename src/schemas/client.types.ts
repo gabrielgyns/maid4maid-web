@@ -16,7 +16,10 @@ export const clientSchema = z.object({
   phone1: z.string(),
   phone2: z.string().optional(),
   email: z.string().email().optional(),
-  addresses: z.array(addressSchema),
+  addresses: z
+    .array(addressSchema)
+    .optional()
+    .transform((value) => value || []),
   preferredFrequency: preferredFrequencyEnum.optional(),
   preferredDay: preferredDayEnum.optional(),
   paymentMethod: paymentMethodEnum.optional(),
@@ -29,3 +32,7 @@ export const clientSchema = z.object({
 });
 
 export type Client = z.infer<typeof clientSchema>;
+
+export const clientFormSchema = clientSchema.omit({
+  organizationId: true, // The organizationId will be set by cookies information
+});

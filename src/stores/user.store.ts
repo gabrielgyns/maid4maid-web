@@ -45,7 +45,7 @@ export const useUserStore = create<UserState>()(
       },
     }),
     {
-      name: '@CRMaidEasy:user',
+      name: '@Maid4Maid:User',
       skipHydration: true,
     },
   ),

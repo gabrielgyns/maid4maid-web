@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
@@ -10,16 +11,40 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import ConfirmDialog from '../ConfirmDialog';
+
 type Row<T> = { original: T };
 
 type ActionsCellProps<T> = {
   row?: Row<T>;
   onEdit: (row?: T) => void;
-  onDelete: (row?: T) => void;
+  onDelete: () => Promise<void>;
+  deleteTitle?: string;
+  deleteDescription?: string;
 };
 
-export function ActionsCell<T>({ row, onEdit, onDelete }: ActionsCellProps<T>) {
+export function ActionsCell<T>({
+  row,
+  onEdit,
+  onDelete,
+  deleteTitle = 'Are you sure?',
+  deleteDescription = 'This action cannot be undone.',
+}: ActionsCellProps<T>) {
   const { t } = useTranslation();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    console.log('Deleting client', row?.original);
+
+    try {
+      await onDelete();
+    } catch (error) {
+      console.error('Delete failed:', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -38,13 +63,23 @@ export function ActionsCell<T>({ row, onEdit, onDelete }: ActionsCellProps<T>) {
           <Pencil className="mr-2 h-4 w-4" />
           <span>{t('Common.edit')}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => (row ? onDelete(row.original) : onDelete())}
-          className="cursor-pointer"
+        <ConfirmDialog
+          title={deleteTitle}
+          description={deleteDescription}
+          confirmText={t('Common.delete')}
+          cancelText={t('Common.cancel')}
+          onConfirm={handleDelete}
+          isLoading={isDeleting}
+          destructive
         >
-          <Trash className="mr-2 h-4 w-4" />
-          <span>{t('Common.delete')}</span>
-        </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onSelect={(event) => event.preventDefault()}
+          >
+            <Trash className="mr-2 h-4 w-4" />
+            <span>{t('Common.delete')}</span>
+          </DropdownMenuItem>
+        </ConfirmDialog>
       </DropdownMenuContent>
     </DropdownMenu>
   );

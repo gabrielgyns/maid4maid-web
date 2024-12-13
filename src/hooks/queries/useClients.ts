@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { Client } from '@/schemas/client.types';
 import { clientService } from '@/services/client.service';
 
+// TODO: review all the keys, don't need all of them I guess
 export const clientKeys = {
   all: ['clients'] as const,
   lists: () => [...clientKeys.all, 'list'] as const,
@@ -25,36 +27,36 @@ export function useClient(clientId?: string) {
   });
 }
 
-// export function useCreateClient() {
-//   const queryClient = useQueryClient();
+export function useCreateClient() {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: (clientData: Client) => clientService.createClient(clientData),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ['clients'] });
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: (clientData: Partial<Client>) =>
+      clientService.createClient(clientData),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: clientKeys.all });
+    },
+  });
+}
 
-// export function useUpdateClient() {
-//   const queryClient = useQueryClient();
+export function useUpdateClient() {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: ({ id, data }: { id: string; data: Partial<Client> }) =>
-//       clientService.updateClientById(id, data),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ['clients'] });
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: (data: Partial<Client>) => clientService.updateClientById(data),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: clientKeys.all });
+    },
+  });
+}
 
-// export function useDeleteClient() {
-//   const queryClient = useQueryClient();
+export function useDeleteClient() {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: (clientId: string) => clientService.deleteClientById(clientId),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ['clients'] });
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: (clientId: string) => clientService.deleteClientById(clientId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: clientKeys.all });
+    },
+  });
+}

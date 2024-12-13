@@ -8,9 +8,10 @@ This project will have more configs like mock/live server and testing.
 - Translations enabled (just need to translate more items)
 
 ### Want to test it?
+
 Front and Back are deployed in cloud and we can test it.
 
-- **link**: https://app.crmaideasy.com
+- **link**: https://app.maid4maid.com
 - **login**: gabriel
 - **pass**: 12345678
 

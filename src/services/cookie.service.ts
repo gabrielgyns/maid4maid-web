@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const AUTH_TOKEN_KEY = 'crmaideasy_token';
+const AUTH_TOKEN_KEY = 'maid4maid_token';
 
 export const cookieService = {
   setAuthCookie(token: string) {
