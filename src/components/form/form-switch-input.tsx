@@ -2,6 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseFormReturn } from 'react-hook-form';
 
+import { cn } from '@/utils';
+
 import {
   FormControl,
   FormDescription,
@@ -16,6 +18,8 @@ type FormSwitchInputProps = {
   name: string;
   label: string;
   formDescription?: string;
+  disabled?: boolean;
+  classNames?: string;
 };
 
 export default function FormSwitchInput({
@@ -23,13 +27,20 @@ export default function FormSwitchInput({
   name,
   label,
   formDescription,
+  disabled = false,
+  classNames,
 }: FormSwitchInputProps) {
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-1 flex-row items-center justify-center gap-4 space-y-0 rounded-lg border p-4">
+        <FormItem
+          className={cn(
+            'flex flex-1 flex-row items-center justify-center gap-4 space-y-0 rounded-lg border p-4',
+            classNames,
+          )}
+        >
           <div className="space-y-0.5">
             <FormLabel className="text-base">{label}</FormLabel>
             {formDescription && (
@@ -39,6 +50,7 @@ export default function FormSwitchInput({
 
           <FormControl>
             <Switch
+              disabled={disabled}
               checked={field.value}
               onCheckedChange={field.onChange}
               aria-readonly

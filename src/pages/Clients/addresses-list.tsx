@@ -1,6 +1,6 @@
 import { Pencil, Trash2 } from 'lucide-react';
 
-import Badge from '@/components/Badge';
+import Badge from '@/components/badge';
 import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -137,7 +137,7 @@ const NoAddressesList = () => {
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="rounded-lg bg-white/95 px-6 py-3 shadow-sm ring-1 ring-gray-200">
+          <div className="rounded-lg px-6 py-3 shadow-sm ring-1 ring-gray-200">
             <p className="text-lg font-medium">No addresses yet 😢</p>
           </div>
         </div>

@@ -14,7 +14,7 @@ export interface UserProfile {
 }
 
 export const userSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   photoUrl: z.string().url().optional(),
   role: rolesEnum.optional(),
   firstName: z.string().min(1, 'First name is required'),

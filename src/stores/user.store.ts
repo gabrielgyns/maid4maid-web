@@ -32,6 +32,7 @@ export const useUserStore = create<UserState>()(
         set({ isLoading: true });
 
         try {
+          // TODO: Move to ReactQuery
           const profile = await usersService.getProfile();
 
           set((state) => ({

@@ -23,4 +23,26 @@ export const usersService = {
 
     return data;
   },
+
+  async getUserById(userId: string) {
+    const { data } = await api.get<User>(`/users/${userId}`);
+
+    return data;
+  },
+
+  async createUser(userData: User) {
+    const { data } = await api.post<User>('/users', userData);
+
+    return data;
+  },
+
+  async updateUserById(userData: User) {
+    const { data } = await api.put<User>(`/users/${userData.id}`, userData);
+
+    return data;
+  },
+
+  async deleteUserById(userId: string) {
+    await api.delete(`/users/${userId}`);
+  },
 };

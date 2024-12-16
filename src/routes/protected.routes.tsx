@@ -7,6 +7,7 @@ import Clients from '@/pages/Clients';
 import ClientsDetails from '@/pages/Clients/client-details';
 import Dashboard from '@/pages/Dashboard';
 import Users from '@/pages/Users';
+import UserDetails from '@/pages/Users/user-details';
 import { RouteMetadata } from '@/schemas/route.types';
 import { useOrganizationStore } from '@/stores/organization.store';
 import { useUserStore } from '@/stores/user.store';
@@ -88,30 +89,30 @@ const userRoutes = {
         breadcrumbs: [{ label: 'Dashboard', path: '/' }, { label: 'Users' }],
       } as RouteMetadata,
     },
-    // {
-    //   path: 'new',
-    //   element: <ClientsDetails />,
-    //   handle: {
-    //     title: 'Clients',
-    //     breadcrumbs: [
-    //       { label: 'Dashboard', path: '/' },
-    //       { label: 'Clients', path: '/clients' },
-    //       { label: 'New Client' },
-    //     ],
-    //   } as RouteMetadata,
-    // },
-    // {
-    //   path: 'edit/:id',
-    //   element: <ClientsDetails />,
-    //   handle: {
-    //     title: 'Clients',
-    //     breadcrumbs: [
-    //       { label: 'Dashboard', path: '/' },
-    //       { label: 'Clients', path: '/clients' },
-    //       { label: 'Edit Client' },
-    //     ],
-    //   } as RouteMetadata,
-    // },
+    {
+      path: 'new',
+      element: <UserDetails />,
+      handle: {
+        title: 'Users',
+        breadcrumbs: [
+          { label: 'Dashboard', path: '/' },
+          { label: 'Users', path: '/users' },
+          { label: 'New User' },
+        ],
+      } as RouteMetadata,
+    },
+    {
+      path: 'edit/:id',
+      element: <UserDetails />,
+      handle: {
+        title: 'Users',
+        breadcrumbs: [
+          { label: 'Dashboard', path: '/' },
+          { label: 'Users', path: '/users' },
+          { label: 'Edit User' },
+        ],
+      } as RouteMetadata,
+    },
   ],
 };
 
