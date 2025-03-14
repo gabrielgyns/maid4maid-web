@@ -1,6 +1,6 @@
 import { User, UserProfile } from '@/schemas/user.types';
 
-import { api } from './api.service';
+import api from './api.service';
 
 interface GetProfileResponse extends UserProfile {
   first_name: string;

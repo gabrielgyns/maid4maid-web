@@ -3,6 +3,7 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,16 +37,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { fetchProfile, clearUser } = useUserStore();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const token = cookieService.getAuthCookie();
+      const refreshToken = cookieService.getRefreshCookie();
+
+      if (token && refreshToken) {
+        try {
+          await fetchProfile();
+        } catch (error) {
+          console.error(error);
+          cookieService.clearAuthCookies();
+          clearUser();
+        }
+      }
+
+      setIsInitialized(true);
+    };
+
+    void initializeAuth();
+  }, [fetchProfile, clearUser]);
 
   const token = cookieService.getAuthCookie();
+  const refreshToken = cookieService.getRefreshCookie();
+  const isAuthenticated = !!token && !!refreshToken;
 
   const login = useCallback(
     async (credentials: { username: string; password: string }) => {
       setIsLoading(true);
 
       try {
-        const { access_token } = await authService.login(credentials);
+        const { access_token, refresh_token } =
+          await authService.login(credentials);
+
         cookieService.setAuthCookie(access_token);
+        cookieService.setRefreshCookie(refresh_token);
 
         await fetchProfile();
 
@@ -55,11 +83,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
 
         navigate('/');
-      } catch {
+      } catch (error) {
+        let errorMessage = t('Login.login_error');
+
+        if (axios.isAxiosError<ApiErrorResponse>(error) && error.response) {
+          errorMessage = error.response.data.message || errorMessage;
+        }
+
         toast({
           title: 'Login',
           variant: 'destructive',
-          description: t('Login.login_error'),
+          description: errorMessage, // t('Login.login_error')
         });
       } finally {
         setIsLoading(false);
@@ -72,10 +106,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
 
     try {
-      // await authService.logout();
+      const refreshToken = cookieService.getRefreshCookie();
+
+      if (refreshToken) {
+        authService.logout(refreshToken).catch(() => {
+          console.error('Failed to logout on server');
+        });
+      }
 
       cookieService.clearAuthCookies();
-
       clearUser();
 
       toast({
@@ -94,7 +133,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
 
       try {
-        await authService.register(data);
+        const { access_token, refresh_token } =
+          await authService.register(data);
+
+        cookieService.setAuthCookie(access_token);
+        cookieService.setRefreshCookie(refresh_token);
+
+        await fetchProfile();
 
         toast({
           title: 'Register',
@@ -102,13 +147,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
 
         navigate('/login');
-      } catch (error: unknown) {
+      } catch (error) {
         let errorMessage = t('Register.register_error');
 
-        if (axios.isAxiosError(error) && error.response) {
-          // Basically... Type guard for the error response data
-          const errorData = error.response.data as ApiErrorResponse;
-          errorMessage = errorData.message || errorMessage;
+        if (axios.isAxiosError<ApiErrorResponse>(error) && error.response) {
+          errorMessage = error.response.data.message || errorMessage;
         }
 
         toast({
@@ -120,17 +163,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsLoading(false);
       }
     },
-    [navigate, t, toast],
+    [fetchProfile, navigate, t, toast],
   );
+
+  if (!isInitialized) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <AuthContext.Provider
       value={{
+        isLoading,
+        isAuthenticated,
         login,
         logout,
         register,
-        isLoading,
-        isAuthenticated: !!token,
       }}
     >
       {children}

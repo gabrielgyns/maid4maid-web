@@ -1,6 +1,6 @@
 import { Client } from '@/schemas/client.types';
 
-import { api } from './api.service';
+import api from './api.service';
 
 export const clientService = {
   async getClients() {

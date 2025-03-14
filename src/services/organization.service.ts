@@ -1,6 +1,6 @@
 import type { Organization } from '@/schemas/organization.types';
 
-import { api } from './api.service';
+import api from './api.service';
 
 export const organizationService = {
   async getOrganization() {

@@ -4,7 +4,11 @@ import { rolesEnum } from './commons';
 
 export interface UserProfile {
   id: string;
-  role: string;
+  role: {
+    id: string;
+    name: string;
+    permissions: Record<string, boolean>;
+  };
   organizationId: string;
   avatar_url: string | null;
   full_name: string;

@@ -128,8 +128,9 @@ export default function UserForm({
             <div className="col-span-2 place-content-center text-sm text-muted-foreground">
               <CalendarClock className="mb-0.5 mr-2 inline-block h-4 w-4" />
               <b>Last logged in:</b>{' '}
-              {new Date(user?.lastLoginAt).toUTCString() ??
-                'User not created or User never logged in'}
+              {user?.lastLoginAt
+                ? new Date(user.lastLoginAt).toUTCString()
+                : 'User never logged in'}
             </div>
 
             <FormSwitchInput

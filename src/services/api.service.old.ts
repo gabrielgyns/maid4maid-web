@@ -1,3 +1,15 @@
+/**
+ * @deprecated
+ * @see api.service.ts
+ * @description This is the old API service WITHOUT GRACEFUL REFRESH that is no longer used.
+ * @description It is kept here for reference.
+ * @description It is not used in the new codebase.
+ * @description It is not used in the new codebase.
+ * @description It is not used in the new codebase.
+ * @description It is not used in the new codebase.
+ * @description It is not used in the new codebase.
+ */
+
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 import { authService } from './auth.service';
@@ -36,77 +48,12 @@ const processQueue = (
   failedQueue = [];
 };
 
-// Calculate token expiration time based on JWT token
-const getTokenExpirationTime = (token: string): number | null => {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(window.atob(base64)) as { exp?: number };
-
-    if (payload.exp) {
-      return payload.exp * 1000; // Convert to milliseconds
-    }
-  } catch (error) {
-    console.error('Failed to decode token:', error);
-  }
-
-  return null;
-};
-
-// Check if token needs refresh (less than 5 minutes to expiration)
-const shouldRefreshToken = (token: string): boolean => {
-  const expirationTime = getTokenExpirationTime(token);
-
-  if (!expirationTime) return false;
-
-  const fiveMinutes = 5 * 60 * 1000;
-
-  return expirationTime - Date.now() < fiveMinutes;
-};
-
-// Proactively refresh token before it expires
-const proactiveTokenRefresh = async (token: string): Promise<void> => {
-  if (isRefreshing || !shouldRefreshToken(token)) return;
-
-  const refreshToken = cookieService.getRefreshCookie();
-  if (!refreshToken) return;
-
-  try {
-    isRefreshing = true;
-
-    const { access_token, refresh_token } =
-      await authService.refreshToken(refreshToken);
-
-    cookieService.setAuthCookie(access_token);
-    cookieService.setRefreshCookie(refresh_token);
-
-    console.log('Token proactively refreshed');
-  } catch (error) {
-    console.error('Failed to proactively refresh token:', error);
-
-    if (
-      axios.isAxiosError(error) &&
-      (error.response?.status === 401 || error.response?.status === 403)
-    ) {
-      cookieService.clearAuthCookies();
-      window.location.href = '/login';
-    }
-  } finally {
-    isRefreshing = false;
-  }
-};
-
 api.interceptors.request.use(
   (config) => {
     const token = cookieService.getAuthCookie();
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-
-      // Avoid loops
-      if (!config.url?.includes('/auth/refresh')) {
-        void proactiveTokenRefresh(token);
-      }
     }
 
     return config;
@@ -119,22 +66,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    // Handling network errors :)
-    if (!error.response) {
-      console.error('Network error detected');
-
-      return Promise.reject(
-        new Error('Network error. Please check your connection.'),
-      );
-    }
-
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
     };
 
     if (!originalRequest) return Promise.reject(error);
 
-    // Handling unauthorized errors (token expired/invalid)
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -144,9 +81,7 @@ api.interceptors.response.use(
 
       if (!refreshToken) {
         cookieService.clearAuthCookies();
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login';
-        }
+
         return Promise.reject(error);
       }
 
@@ -184,11 +119,6 @@ api.interceptors.response.use(
         cookieService.clearAuthCookies();
 
         isRefreshing = false;
-
-        // Redirect to login page if not already there
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login';
-        }
 
         return Promise.reject(refreshError as Error);
       }

@@ -40,6 +40,7 @@ export const useUserStore = create<UserState>()(
           }));
         } catch (error) {
           console.error('Error while fetching the profile:', error);
+          throw error; // auth context will handle the error
         } finally {
           set({ isLoading: false });
         }
