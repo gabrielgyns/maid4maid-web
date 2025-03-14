@@ -42,22 +42,25 @@ const getTokenExpirationTime = (token: string): number | null => {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const payload = JSON.parse(window.atob(base64)) as { exp?: number };
+
     if (payload.exp) {
       return payload.exp * 1000; // Convert to milliseconds
     }
   } catch (error) {
     console.error('Failed to decode token:', error);
   }
+
   return null;
 };
 
 // Check if token needs refresh (less than 5 minutes to expiration)
 const shouldRefreshToken = (token: string): boolean => {
   const expirationTime = getTokenExpirationTime(token);
+
   if (!expirationTime) return false;
 
-  // Refresh if less than 5 minutes until expiration
   const fiveMinutes = 5 * 60 * 1000;
+
   return expirationTime - Date.now() < fiveMinutes;
 };
 
@@ -70,19 +73,22 @@ const proactiveTokenRefresh = async (token: string): Promise<void> => {
 
   try {
     isRefreshing = true;
+
     const { access_token, refresh_token } =
       await authService.refreshToken(refreshToken);
+
     cookieService.setAuthCookie(access_token);
     cookieService.setRefreshCookie(refresh_token);
+
     console.log('Token proactively refreshed');
   } catch (error) {
     console.error('Failed to proactively refresh token:', error);
+
     if (
       axios.isAxiosError(error) &&
       (error.response?.status === 401 || error.response?.status === 403)
     ) {
       cookieService.clearAuthCookies();
-      // Optional: Redirect to login if needed
       window.location.href = '/login';
     }
   } finally {
@@ -97,9 +103,8 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
 
-      // Don't try to refresh token for refresh token requests to avoid loops
+      // Avoid loops
       if (!config.url?.includes('/auth/refresh')) {
-        // Use void to ignore the promise - we don't want to block the request
         void proactiveTokenRefresh(token);
       }
     }
@@ -114,10 +119,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    // Handle network errors
+    // Handling network errors :)
     if (!error.response) {
-      // This is a network error (no response from server)
       console.error('Network error detected');
+
       return Promise.reject(
         new Error('Network error. Please check your connection.'),
       );
@@ -129,7 +134,7 @@ api.interceptors.response.use(
 
     if (!originalRequest) return Promise.reject(error);
 
-    // Handle unauthorized errors (token expired/invalid)
+    // Handling unauthorized errors (token expired/invalid)
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -139,7 +144,6 @@ api.interceptors.response.use(
 
       if (!refreshToken) {
         cookieService.clearAuthCookies();
-        // Redirect to login page if not already there
         if (window.location.pathname !== '/login') {
           window.location.href = '/login';
         }
