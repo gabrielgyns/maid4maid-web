@@ -1,6 +1,6 @@
 import { Address } from '@/schemas/address.types';
 
-import { api } from './api.service';
+import api from './api.service';
 
 export const addressService = {
   async getAddresses() {
