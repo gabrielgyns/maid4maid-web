@@ -1,6 +1,6 @@
 import { Pencil, Trash2 } from 'lucide-react';
 
-import Badge from '@/components/badge';
+import Badge from '@/components/badge.tsx';
 import ConfirmDialog from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
