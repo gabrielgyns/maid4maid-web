@@ -95,9 +95,9 @@ export default function Users() {
       cell: ({ row }: RowType) => (
         <ActionsCell
           row={row}
-          onEdit={() => handleEditUser(row.original.id)}
+          onEdit={() => handleEditUser(row.original.id!)}
           onDelete={async () => {
-            await deleteUserById.mutateAsync(row.original.id);
+            await deleteUserById.mutateAsync(row.original.id!);
           }}
         />
       ),
