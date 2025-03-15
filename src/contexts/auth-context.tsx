@@ -26,6 +26,13 @@ interface AuthContextData {
   login: (credentials: { username: string; password: string }) => Promise<void>;
   logout: () => void;
   register: (data: RegisterData) => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  validateResetToken: (token: string) => Promise<boolean>;
+  resetPassword: (data: {
+    password: string;
+    passwordConfirmation: string;
+    token: string;
+  }) => Promise<void>;
 }
 
 const AuthContext = createContext({} as AuthContextData);
@@ -119,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast({
         title: 'Logout',
-        description: t('Logout.logout_success'),
+        description: t('Logint.logout_success'),
       });
 
       navigate('/login');
@@ -166,6 +173,100 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [fetchProfile, navigate, t, toast],
   );
 
+  const forgotPassword = useCallback(
+    async (email: string) => {
+      setIsLoading(true);
+
+      try {
+        await authService.requestPasswordReset(email);
+
+        toast({
+          title: 'Forgot Password',
+          description:
+            'If the email is valid, you will receive a link to reset your password!', // t('ForgotPassword.forgot_password_success')
+        });
+
+        navigate('/login');
+      } catch (error) {
+        console.error(error);
+
+        toast({
+          title: 'Forgot Password',
+          variant: 'destructive',
+          description: 'Something went wrong!', // t('ForgotPassword.forgot_password_error')
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [navigate, toast],
+  );
+
+  const validateResetToken = useCallback(
+    async (token: string) => {
+      setIsLoading(true);
+
+      try {
+        await authService.validateResetToken(token);
+
+        return true;
+      } catch (error) {
+        console.error(error);
+
+        toast({
+          title: 'Reset Password',
+          variant: 'destructive',
+          description: 'Invalid or expired reset token',
+        });
+
+        navigate('/login');
+
+        return false;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [navigate, toast],
+  );
+
+  const resetPassword = useCallback(
+    async (data: {
+      password: string;
+      passwordConfirmation: string;
+      token: string;
+    }) => {
+      setIsLoading(true);
+
+      try {
+        const { password, passwordConfirmation, token } = data;
+
+        await authService.resetPassword(token, password, passwordConfirmation);
+
+        toast({
+          title: 'Reset Password',
+          description: 'Your password has been reset successfully!',
+        });
+
+        navigate('/login');
+      } catch (error) {
+        let errorMessage = 'Failed to reset password';
+
+        if (axios.isAxiosError<ApiErrorResponse>(error) && error.response) {
+          errorMessage = error.response.data.message || errorMessage;
+        }
+
+        toast({
+          title: 'Reset Password',
+          variant: 'destructive',
+          description: errorMessage,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [navigate, toast],
+  );
+
   if (!isInitialized) {
     return <div>Loading...</div>;
   }
@@ -178,6 +279,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login,
         logout,
         register,
+        forgotPassword,
+        validateResetToken,
+        resetPassword,
       }}
     >
       {children}

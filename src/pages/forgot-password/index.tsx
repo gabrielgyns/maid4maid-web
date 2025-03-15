@@ -23,36 +23,40 @@ import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/auth-context';
 
 const formSchema = z.object({
-  username: z.string().min(1, 'Por favor insira um username válido.'),
-  password: z.string().min(6, {
-    message: 'A senha deve ter pelo menos 6 caracteres.',
-  }),
+  email: z
+    .string()
+    .email('Invalid email address.')
+    .min(1, 'Email is required.'),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   const { t } = useTranslation();
-  const { login, isLoading } = useAuth();
+  const { forgotPassword, isLoading } = useAuth();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
     defaultValues: {
-      username: '',
-      password: '',
+      email: '',
     },
   });
 
-  const onSubmit = async (data: FormData) => {
-    await login(data);
+  const onSubmit = async ({ email }: FormData) => {
+    await forgotPassword(email);
   };
 
   return (
     <Card className="w-full sm:w-[34.375rem]">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">{t('Login.title')}</CardTitle>
-        <CardDescription>{t('Login.subtitle')}</CardDescription>
+        <CardTitle className="mb-4 text-2xl">
+          Did you forget your password?
+        </CardTitle>
+        <CardDescription>
+          Insert your email below and submit it, you are going to receive a link
+          to reset your password.
+        </CardDescription>
       </CardHeader>
 
       <CardContent className="py-0">
@@ -60,39 +64,17 @@ export default function LoginPage() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormInput
               form={form}
-              name="username"
-              label={t('Login.username')}
-              placeholder={t('Login.username_placeholder')}
+              name="email"
+              label="Email"
+              placeholder="Insert a valid email"
               disabled={isLoading}
             />
-
-            <div>
-              <FormInput
-                form={form}
-                name="password"
-                label={t('Login.password')}
-                type="password"
-                placeholder={t('Login.password_placeholder')}
-                disabled={isLoading}
-              />
-
-              <Button
-                variant="link"
-                className="-mt-2 mb-2 flex items-end justify-end text-xs text-muted-foreground"
-                asChild
-                size="sm"
-              >
-                <Link to="/forgot-password">
-                  Forgot your password? Click here.
-                </Link>
-              </Button>
-            </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="size-4 animate-spin" />
               ) : (
-                t('Login.login_button')
+                'Send email to reset'
               )}
             </Button>
           </form>
@@ -100,8 +82,11 @@ export default function LoginPage() {
       </CardContent>
 
       <CardFooter className="flex flex-col gap-4">
-        <div className="mt-4 text-center text-sm">
-          <Button variant="link" className="w-full" asChild size="sm">
+        <div className="mt-4 flex w-full justify-between text-sm">
+          <Button variant="link" className="" asChild size="sm">
+            <Link to="/login">Back to login</Link>
+          </Button>
+          <Button variant="link" className="" asChild size="sm">
             <Link to="/register">{t('Login.subscribe_link')}</Link>
           </Button>
         </div>

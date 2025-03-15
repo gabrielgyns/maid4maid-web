@@ -1,7 +1,7 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 import { AuthProvider } from '@/contexts/auth-context';
-import Error from '@/pages/Error';
+import Error from '@/pages/error';
 
 import { protectedRoutes } from './protected.routes';
 import { publicRoutes } from './public.routes';

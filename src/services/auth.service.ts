@@ -42,18 +42,27 @@ export const authService = {
   },
 
   async logout(refreshToken: string) {
-    return api.post('/auth/logout', { refreshToken });
+    return await api.post('/auth/logout', { refreshToken });
   },
 
-  // >>>>>> TODO: To be implemented <<<<<<
-  // async forgotPassword(email: string) {
-  // 	return api.post("/auth/forgot-password", { email });
-  // },
+  // --- Reset Password ---
+  async requestPasswordReset(email: string): Promise<{ message: string }> {
+    return await api.post('/password-resets/request', { email });
+  },
 
-  // async resetPassword(token: string, newPassword: string) {
-  // 	return api.post("/auth/reset-password", {
-  // 		token,
-  // 		newPassword,
-  // 	});
-  // },
+  async validateResetToken(token: string): Promise<{ valid: boolean }> {
+    return await api.get(`/password-resets/validate?token=${token}`);
+  },
+
+  async resetPassword(
+    token: string,
+    newPassword: string,
+    passwordConfirmation: string,
+  ): Promise<{ message: string }> {
+    return await api.post('/password-resets/reset', {
+      token,
+      password: newPassword,
+      passwordConfirmation,
+    });
+  },
 };

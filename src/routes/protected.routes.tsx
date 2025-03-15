@@ -3,11 +3,11 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import AppLayout from '@/components/layouts/app-layout';
 import { useAuth } from '@/contexts/auth-context';
-import Clients from '@/pages/Clients';
-import ClientsDetails from '@/pages/Clients/client-details';
-import Dashboard from '@/pages/Dashboard';
-import Users from '@/pages/Users';
-import UserDetails from '@/pages/Users/user-details';
+import Clients from '@/pages/clients';
+import ClientsDetails from '@/pages/clients/client-details';
+import Dashboard from '@/pages/dashboard';
+import Users from '@/pages/users';
+import UserDetails from '@/pages/users/user-details';
 import { RouteMetadata } from '@/schemas/route.types';
 import { useOrganizationStore } from '@/stores/organization.store';
 import { useUserStore } from '@/stores/user.store';

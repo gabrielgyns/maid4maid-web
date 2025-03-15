@@ -2,10 +2,10 @@ import { Navigate } from 'react-router-dom';
 
 import { AuthLayout } from '@/components/layouts/auth-layout';
 import { useAuth } from '@/contexts/auth-context';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
-// import { ForgotPassword } from "@/pages/auth/forgot-password";
-// import { ResetPassword } from "@/pages/auth/reset-password";
+import ForgotPasswordPage from '@/pages/forgot-password';
+import Login from '@/pages/login';
+import Register from '@/pages/register';
+import ResetPasswordPage from '@/pages/reset-password';
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -38,23 +38,22 @@ export const publicRoutes = [
           </PublicRoute>
         ),
       },
-
-      // {
-      // 	path: "forgot-password",
-      // 	element: (
-      // 		<PublicRoute>
-      // 			<ForgotPassword />
-      // 		</PublicRoute>
-      // 	),
-      // },
-      // {
-      // 	path: "reset-password",
-      // 	element: (
-      // 		<PublicRoute>
-      // 			<ResetPassword />
-      // 		</PublicRoute>
-      // 	),
-      // },
+      {
+        path: 'forgot-password',
+        element: (
+          <PublicRoute>
+            <ForgotPasswordPage />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: 'reset-password/',
+        element: (
+          <PublicRoute>
+            <ResetPasswordPage />
+          </PublicRoute>
+        ),
+      },
     ],
   },
 ];
