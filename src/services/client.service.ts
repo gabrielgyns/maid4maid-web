@@ -16,8 +16,19 @@ export const clientService = {
   },
 
   async createClient(clientData: Partial<Client>) {
-    // or just Client
-    const { data } = await api.post<Client>('/clients', clientData);
+    const addressesWithTempIds = clientData.addresses?.map((address) => {
+      const { tempId: _tempId, ...restAddress } = address;
+
+      return {
+        ...restAddress,
+        tempId: address.id,
+      };
+    });
+
+    const { data } = await api.post<Client>('/clients', {
+      ...clientData,
+      addresses: addressesWithTempIds,
+    });
 
     return data;
   },

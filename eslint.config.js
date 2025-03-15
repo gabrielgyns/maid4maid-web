@@ -53,5 +53,7 @@ export default tseslint.config({
     ],
     'simple-import-sort/exports': 'error',
     'react-refresh/only-export-components': 'off',
+    'no-unused-vars': ['off', { varsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^_' }],
   },
 });
