@@ -32,6 +32,7 @@ interface AuthContextData {
     password: string;
     passwordConfirmation: string;
     token: string;
+    isNewUser?: boolean;
   }) => Promise<void>;
 }
 
@@ -234,29 +235,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password: string;
       passwordConfirmation: string;
       token: string;
+      isNewUser?: boolean;
     }) => {
       setIsLoading(true);
 
       try {
-        const { password, passwordConfirmation, token } = data;
+        const { password, passwordConfirmation, token, isNewUser } = data;
 
         await authService.resetPassword(token, password, passwordConfirmation);
 
-        toast({
-          title: 'Reset Password',
-          description: 'Your password has been reset successfully!',
-        });
+        if (isNewUser) {
+          toast({
+            title: 'Create Password',
+            description: 'Your password has been created successfully!',
+          });
+        } else {
+          toast({
+            title: 'Reset Password',
+            description: 'Your password has been reset successfully!',
+          });
+        }
 
         navigate('/login');
       } catch (error) {
-        let errorMessage = 'Failed to reset password';
+        let errorMessage = 'Failed to create/reset password';
 
         if (axios.isAxiosError<ApiErrorResponse>(error) && error.response) {
           errorMessage = error.response.data.message || errorMessage;
         }
 
         toast({
-          title: 'Reset Password',
+          title: 'Create/Reset Password',
           variant: 'destructive',
           description: errorMessage,
         });

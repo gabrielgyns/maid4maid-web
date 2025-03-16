@@ -35,7 +35,7 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function ResetPasswordPage() {
+export default function CreatePasswordPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -78,6 +78,7 @@ export default function ResetPasswordPage() {
       password: data.password,
       passwordConfirmation: data.passwordConfirmation,
       token,
+      isNewUser: true,
     });
   };
 
@@ -88,9 +89,9 @@ export default function ResetPasswordPage() {
   return (
     <Card className="w-full sm:w-[34.375rem]">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Reset Password</CardTitle>
+        <CardTitle className="text-2xl">Welcome to the team</CardTitle>
         <CardDescription>
-          Insert your new password below and submit it.
+          Please create a password to be able to login to your account.
         </CardDescription>
       </CardHeader>
 
@@ -119,7 +120,7 @@ export default function ResetPasswordPage() {
               {isLoading ? (
                 <Loader2 className="size-4 animate-spin" />
               ) : (
-                'Reset Password'
+                'Create Password'
               )}
             </Button>
           </form>
