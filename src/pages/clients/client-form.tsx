@@ -72,9 +72,6 @@ export function ClientForm({
       (addr) => addr.tempId !== address.tempId,
     );
 
-    console.log('GSS newAddressessFiltered', newAddressessFiltered);
-    console.log('GSS new', [...newAddressessFiltered, address]);
-
     setNewAddresses([...newAddressessFiltered, address]);
   };
 

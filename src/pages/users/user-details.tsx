@@ -1,6 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useUsers } from '@/hooks/queries/use-users';
+import {
+  useCreateUser,
+  useDeleteUser,
+  useUpdateUser,
+  useUser,
+} from '@/hooks/queries/use-users';
 import { useToast } from '@/hooks/use-toast';
 import { User } from '@/schemas/user.types';
 
@@ -11,55 +16,100 @@ export default function UserDetails() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { getUserById, createUser, updateUserById, deleteUserById } =
-    useUsers();
-
   const {
     data: user,
-    // isLoading: isUserLoading,
-    // error: isUserError,
-  } = getUserById(id);
+    isLoading: isUserLoading,
+    error: userError,
+  } = useUser(id);
+
+  const createUserMutation = useCreateUser();
+  const updateUserMutation = useUpdateUser();
+  const deleteUserMutation = useDeleteUser();
 
   const handleSubmit = async (data: Partial<User>) => {
-    if (id) {
-      await updateUserById.mutateAsync({ id, ...data } as User);
-    } else {
-      await createUser.mutateAsync(data as User);
+    try {
+      if (id) {
+        const updateData = {
+          id,
+          ...data,
+        } as User;
+
+        await updateUserMutation.mutateAsync(updateData);
+
+        toast({
+          title: 'Success',
+          description: 'User updated successfully',
+        });
+      } else {
+        await createUserMutation.mutateAsync(data as User);
+
+        toast({
+          title: 'Success',
+          description: 'User created successfully',
+        });
+      }
+
+      navigate('/users');
+    } catch (error) {
+      console.error('Error saving user:', error);
+
+      toast({
+        title: 'Error',
+        description: 'Failed to save user. Please try again.',
+        variant: 'destructive',
+      });
     }
-
-    navigate('/users');
-
-    toast({
-      title: 'Users',
-      description: 'User saved successfully',
-    });
   };
 
   const handleDelete = async (userId: string) => {
-    await deleteUserById.mutateAsync(userId);
+    try {
+      await deleteUserMutation.mutateAsync(userId);
 
-    navigate('/users');
+      toast({
+        title: 'Success',
+        description: 'User deleted successfully',
+      });
 
-    toast({
-      title: 'Users',
-      description: 'User deleted successfully',
-    });
+      navigate('/users');
+    } catch (error) {
+      console.error('Error deleting user:', error);
+
+      toast({
+        title: 'Error',
+        description: 'Failed to delete user. Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
 
-  // Normalizes client data by replacing null values with undefined.
-  const normalizedDataUser = {
-    ...Object.fromEntries(
-      Object.entries(user || {}).map(([key, value]) => [
-        key,
-        value ?? undefined,
-      ]),
-    ),
-  };
+  if (isUserLoading) {
+    return <div className="flex justify-center p-8">Loading user data...</div>;
+  }
+
+  if (userError && id) {
+    return (
+      <div className="rounded-md bg-destructive/15 p-4 text-destructive">
+        Error loading user: {userError.message}
+      </div>
+    );
+  }
+
+  const normalizedUser =
+    id && user
+      ? {
+          ...Object.fromEntries(
+            Object.entries(user).map(([key, value]) => [
+              key,
+              value === null ? undefined : value,
+            ]),
+          ),
+        }
+      : undefined;
 
   return (
     <UserForm
-      user={normalizedDataUser as User}
-      isLoading={updateUserById.isPending || createUser.isPending}
+      user={normalizedUser as User}
+      isLoading={updateUserMutation.isPending || createUserMutation.isPending}
       onSubmit={handleSubmit}
       onDelete={handleDelete}
     />

@@ -45,4 +45,12 @@ export const usersService = {
   async deleteUserById(userId: string) {
     await api.delete(`/users/${userId}`);
   },
+
+  async resetUserPassword(userId: string): Promise<{ message: string }> {
+    const { data } = await api.post<{ message: string }>(
+      `/users/${userId}/reset-password`,
+    );
+
+    return data;
+  },
 };

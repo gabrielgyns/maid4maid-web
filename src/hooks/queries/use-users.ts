@@ -3,59 +3,72 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { User } from '@/schemas/user.types';
 import { usersService } from '@/services/user.service';
 
-const usersKeys = {
-  all: ['users'],
-  byId: (userId: string) => ['users', { userId }],
-  byLogin: (login: string) => ['users', { login }],
+export const userKeys = {
+  all: ['users'] as const,
+  lists: () => [...userKeys.all, 'list'] as const,
+  list: (filters: string) => [...userKeys.lists(), { filters }] as const,
+  details: () => [...userKeys.all, 'detail'] as const,
+  detail: (id: string) => [...userKeys.details(), id] as const,
 };
 
-export const useUsers = () => {
-  const queryClient = useQueryClient();
-
-  const getUsers = useQuery({
-    queryKey: usersKeys.all,
+export function useUsers() {
+  return useQuery({
+    queryKey: userKeys.lists(),
     queryFn: () => usersService.getUsers(),
   });
+}
 
-  const useUserById = (userId?: string) =>
-    useQuery({
-      queryKey: usersKeys.byId(userId as string),
-      queryFn: () => usersService.getUserById(userId as string),
-      enabled: !!userId,
-    });
+export function useUser(userId?: string) {
+  return useQuery({
+    queryKey: ['users', userId],
+    queryFn: () => usersService.getUserById(userId as string),
+    enabled: !!userId,
+  });
+}
 
-  const createUser = useMutation({
-    mutationFn: (userData: User) => usersService.createUser(userData),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: usersKeys.all,
-      });
+export function useCreateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (userData: Partial<User>) =>
+      usersService.createUser(userData as User),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: userKeys.all });
     },
   });
+}
 
-  const updateUserById = useMutation({
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: (userData: User) => usersService.updateUserById(userData),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: usersKeys.all,
-      });
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: userKeys.all });
     },
   });
+}
 
-  const deleteUserById = useMutation({
+export function useDeleteUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: (userId: string) => usersService.deleteUserById(userId),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: usersKeys.all,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: userKeys.all });
+    },
+  });
+}
+
+export function useResetUserPassword() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (userId: string) => usersService.resetUserPassword(userId),
+    onSuccess: (_, userId) => {
+      void queryClient.invalidateQueries({
+        queryKey: ['users', userId],
       });
     },
   });
-
-  return {
-    getUsers,
-    getUserById: useUserById,
-    createUser,
-    updateUserById,
-    deleteUserById,
-  };
-};
+}

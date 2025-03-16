@@ -37,7 +37,7 @@ export default function FormSwitchInput({
       render={({ field }) => (
         <FormItem
           className={cn(
-            'flex flex-1 flex-row items-center justify-center gap-4 space-y-0 rounded-lg border p-4',
+            'flex flex-1 flex-row items-center justify-between gap-4 space-y-0 rounded-lg border p-4',
             classNames,
           )}
         >

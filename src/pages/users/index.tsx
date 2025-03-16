@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { CircleCheck, CircleX, Loader2, PlusCircle } from 'lucide-react';
+import { CircleCheck, CircleX, PlusCircle } from 'lucide-react';
 
 import { DataTable } from '@/components/data-table';
 import { ActionsCell } from '@/components/data-table/actions-cell';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { useUsers } from '@/hooks/queries/use-users';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useDeleteUser, useUsers } from '@/hooks/queries/use-users';
 import { User } from '@/schemas/user.types';
 import { useUserStore } from '@/stores/user.store';
 
@@ -18,13 +19,19 @@ type RowType = {
 export default function Users() {
   const navigate = useNavigate();
   const { user } = useUserStore();
-  const { getUsers, deleteUserById } = useUsers();
+  const deleteUserMutation = useDeleteUser();
 
-  const { data: users, isLoading, error } = getUsers;
+  const { data: users, isLoading, error } = useUsers();
 
   if (isLoading) {
-    // TODO: Add a skeleton
-    return <Loader2 className="size-4 animate-spin" />;
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <Skeleton className="h-10 w-36" />
+        </div>
+        <Skeleton className="h-[400px] w-full" />
+      </div>
+    );
   }
 
   if (error) {
@@ -97,8 +104,10 @@ export default function Users() {
           row={row}
           onEdit={() => handleEditUser(row.original.id!)}
           onDelete={async () => {
-            await deleteUserById.mutateAsync(row.original.id!);
+            await deleteUserMutation.mutateAsync(row.original.id!);
           }}
+          deleteTitle="Delete User"
+          deleteDescription="Are you sure you want to delete this user? This action cannot be undone."
         />
       ),
     },
@@ -119,7 +128,7 @@ export default function Users() {
         className="mb-4 self-end"
         type="button"
       >
-        <PlusCircle /> Add New User
+        <PlusCircle className="mr-2 h-4 w-4" /> Add New User
       </Button>
       <DataTable columns={columns} data={users ?? []} />
     </div>
