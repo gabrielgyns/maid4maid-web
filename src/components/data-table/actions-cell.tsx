@@ -10,6 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useToast } from '@/hooks/use-toast';
 
 import ConfirmDialog from '../confirm-dialog';
 
@@ -32,15 +33,25 @@ export function ActionsCell<T>({
 }: ActionsCellProps<T>) {
   const { t } = useTranslation();
   const [isDeleting, setIsDeleting] = useState(false);
+  const { toast } = useToast();
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    console.log('Deleting client', row?.original);
 
     try {
       await onDelete();
+
+      toast({
+        title: t('Common.success'),
+        description: t('Common.deleteSuccess'),
+      });
     } catch (error) {
       console.error('Delete failed:', error);
+
+      toast({
+        title: t('Common.error'),
+        description: t('Common.deleteFailed'),
+      });
     } finally {
       setIsDeleting(false);
     }

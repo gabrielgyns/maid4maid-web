@@ -30,6 +30,7 @@ type FormInputProps = {
   label: string;
   placeholder?: string;
   formDescription?: string;
+  classNames?: string;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
 export default function FormSelectInput({
@@ -39,20 +40,19 @@ export default function FormSelectInput({
   options,
   formDescription,
   placeholder = 'Select an option',
-}: FormInputProps) {
+  classNames,
+}: Omit<FormInputProps, 'className'>) {
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex-col">
+        <FormItem className={classNames}>
           <FormLabel>{label}</FormLabel>
-
-          <p>{field.value}</p>
 
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className="!mt-0.5">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
