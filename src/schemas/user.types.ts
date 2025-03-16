@@ -28,9 +28,10 @@ export const userSchema = z.object({
   login: z.string().min(3, 'Login should have at least 3 characters'),
   isDriver: z.boolean().default(false),
   isActive: z.boolean().default(true),
-  lastLoginAt: z.date().optional(),
+  lastLoginAt: z.union([z.string(), z.date()]).optional(),
   defaultTeamId: z.string().optional(),
   roleId: z.string().optional(),
+  file: z.instanceof(File).optional(),
 });
 
 export type User = z.infer<typeof userSchema>;

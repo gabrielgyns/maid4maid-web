@@ -32,6 +32,7 @@ export default function UserDetails() {
         const updateData = {
           id,
           ...data,
+          photoUrl: data.file instanceof File ? undefined : user?.photoUrl,
         } as User;
 
         await updateUserMutation.mutateAsync(updateData);

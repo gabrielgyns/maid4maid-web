@@ -78,7 +78,6 @@ export default function Clients() {
           row={row}
           onEdit={() => handleEditClient(row.original.id!)}
           onDelete={async () => {
-            console.log('Deleting client:', row.original.id);
             await deleteClientMutate.mutateAsync(row.original.id!);
           }}
         />

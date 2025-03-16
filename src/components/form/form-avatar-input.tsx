@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Upload } from 'lucide-react';
 
@@ -35,9 +35,20 @@ export default function FormAvatarInput({
   formDescription,
   disabled = false,
 }: FormAvatarInputProps) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(
-    (form.getValues(name) as string) || null,
-  );
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const photoUrl = form.getValues('photoUrl') as string | undefined;
+    const file = form.getValues(name) as File | undefined;
+
+    if (file instanceof File) {
+      setPreviewUrl(URL.createObjectURL(file));
+    } else if (photoUrl) {
+      setPreviewUrl(photoUrl);
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [form, name]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -51,7 +62,7 @@ export default function FormAvatarInput({
 
   const initials =
     firstName && lastName
-      ? `${firstName.charAt(0)}${lastName.charAt(0)}`
+      ? getInitialsFromName(`${firstName} ${lastName}`)
       : getInitialsFromName('User');
 
   return (
@@ -64,10 +75,7 @@ export default function FormAvatarInput({
           <FormLabel>{label}</FormLabel>
 
           <Avatar className="h-24 w-24">
-            <AvatarImage
-              src={previewUrl || (value as string)}
-              alt="User avatar"
-            />
+            <AvatarImage src={previewUrl || undefined} alt="User avatar" />
             <AvatarFallback className="text-xl">{initials}</AvatarFallback>
           </Avatar>
 

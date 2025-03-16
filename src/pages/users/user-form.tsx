@@ -119,7 +119,7 @@ export default function UserForm({
             <div className="col-span-1">
               <FormAvatarInput
                 form={form}
-                name="photoUrl"
+                name="file"
                 label="Profile Photo"
                 firstName={form.watch('firstName')}
                 lastName={form.watch('lastName')}

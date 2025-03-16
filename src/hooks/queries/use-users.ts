@@ -43,8 +43,9 @@ export function useUpdateUser() {
 
   return useMutation({
     mutationFn: (userData: User) => usersService.updateUserById(userData),
-    onSuccess: () => {
+    onSuccess: (_, userData) => {
       void queryClient.invalidateQueries({ queryKey: userKeys.all });
+      void queryClient.invalidateQueries({ queryKey: ['users', userData.id] });
     },
   });
 }

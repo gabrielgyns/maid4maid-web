@@ -7,8 +7,11 @@ import { userSchema } from '@/schemas/user.types';
 export const registrationOrgSchema = organizationSchema.omit({ id: true });
 
 // Used basically for the Master User Step validation.
+// We removed the password field from the userSchema
+// because we want to use only in the registration form.
 export const registrationUserSchema = userSchema
   .extend({
+    password: z.string().min(8, 'Password must be at least 8 characters'),
     passwordConfirmation: z.string(),
   })
   .omit({ id: true })

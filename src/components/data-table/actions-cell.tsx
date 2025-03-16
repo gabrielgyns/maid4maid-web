@@ -35,7 +35,6 @@ export function ActionsCell<T>({
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    console.log('Deleting client', row?.original);
 
     try {
       await onDelete();
