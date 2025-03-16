@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 
 import { AuthLayout } from '@/components/layouts/auth-layout';
 import { useAuth } from '@/contexts/auth-context';
+import CreatePasswordPage from '@/pages/create-password';
 import ForgotPasswordPage from '@/pages/forgot-password';
 import Login from '@/pages/login';
 import Register from '@/pages/register';
@@ -47,10 +48,18 @@ export const publicRoutes = [
         ),
       },
       {
-        path: 'reset-password/',
+        path: 'reset-password',
         element: (
           <PublicRoute>
             <ResetPasswordPage />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: 'create-password',
+        element: (
+          <PublicRoute>
+            <CreatePasswordPage />
           </PublicRoute>
         ),
       },
