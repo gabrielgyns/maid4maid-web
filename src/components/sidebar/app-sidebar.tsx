@@ -29,6 +29,11 @@ const items = [
     icon: Users,
   },
   {
+    title: 'Teams',
+    url: '/teams',
+    icon: Users,
+  },
+  {
     title: 'Settings',
     url: '/settings',
     icon: Settings,

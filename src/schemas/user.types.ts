@@ -29,6 +29,8 @@ export const userSchema = z.object({
   isDriver: z.boolean().default(false),
   isActive: z.boolean().default(true),
   lastLoginAt: z.union([z.string(), z.date()]).optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional(),
   defaultTeamId: z.string().optional(),
   roleId: z.string().optional(),
   file: z.instanceof(File).optional(),

@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { formatDate } from 'date-fns';
 import {
   CalendarClock,
   Info,
@@ -26,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import { useResetUserPassword } from '@/hooks/queries/use-users';
+import { useFormatDate } from '@/hooks/use-format-date';
 import { useToast } from '@/hooks/use-toast';
 import { User as UserType, userSchema } from '@/schemas/user.types';
 import { cn } from '@/utils';
@@ -47,6 +47,7 @@ export default function UserForm({
 }: UserFormProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { formatDateWithLocale } = useFormatDate();
   const navigate = useNavigate();
   const [isResettingPassword, setIsResettingPassword] = useState(false);
 
@@ -81,15 +82,15 @@ export default function UserForm({
       await resetPasswordMutation.mutateAsync(user.id);
 
       toast({
-        title: 'User',
-        description: 'Password reset link sent successfully.',
+        title: t('Users.title'),
+        description: t('Users.password_reset.reset_link_sent_successfully'),
       });
     } catch (error) {
       console.error('Failed to send password reset link:', error);
 
       toast({
-        title: 'User',
-        description: 'Failed to send password reset link.',
+        title: t('Users.title'),
+        description: t('Users.password_reset.failed_to_send_reset_link'),
         variant: 'destructive',
       });
     } finally {
@@ -105,14 +106,14 @@ export default function UserForm({
       >
         <h3 className="flex items-center gap-2 text-3xl font-semibold">
           <UserPen className="h-7 w-7" />
-          User Information
+          {t('Users.form.title')}
         </h3>
 
         {/* Basic Information */}
         <Card className="space-y-4 p-6">
           <h3 className="flex items-center gap-2 pb-4 text-lg font-semibold">
             <User className="h-5 w-5" />
-            Personal Information
+            {t('Users.form.personal_information')}
           </h3>
 
           <div className="grid grid-cols-4 gap-6">
@@ -120,10 +121,10 @@ export default function UserForm({
               <FormAvatarInput
                 form={form}
                 name="file"
-                label="Profile Photo"
+                label={t('Users.form.profile_photo')}
                 firstName={form.watch('firstName')}
                 lastName={form.watch('lastName')}
-                formDescription="Upload a profile picture (optional)"
+                formDescription={t('Users.form.upload_photo_description')}
               />
             </div>
 
@@ -132,26 +133,26 @@ export default function UserForm({
                 <FormInput
                   form={form}
                   name="firstName"
-                  label={t('Register.first_name')}
+                  label={t('Users.form.first_name')}
                 />
                 <FormInput
                   form={form}
                   name="lastName"
-                  label={t('Register.last_name')}
+                  label={t('Users.form.last_name')}
                 />
               </div>
 
               <FormInput
                 form={form}
                 name="email"
-                label={t('Register.user_email')}
+                label={t('Users.form.email')}
                 type="email"
               />
 
               <FormInput
                 form={form}
                 name="phone"
-                label={t('Register.user_phone')}
+                label={t('Users.form.phone')}
               />
             </div>
           </div>
@@ -162,49 +163,61 @@ export default function UserForm({
           <Card className="space-y-4 p-6">
             <h3 className="flex items-center gap-2 pb-2 text-lg font-semibold">
               <Shield className="h-5 w-5" />
-              Authentication & Permissions
+              {t('Users.form.authentication_and_permissions')}
             </h3>
 
             <div className="space-y-4">
-              <FormInput form={form} name="login" label={t('Register.login')} />
+              <FormInput
+                form={form}
+                name="login"
+                label={t('Users.form.username')}
+              />
               <FormSelectInput
                 form={form}
                 name="roleId"
-                label="Role"
+                label={t('Users.form.role')}
                 options={[]}
-                placeholder="Select a role"
-                formDescription="Assign a role to determine permissions"
+                placeholder={t('Users.form.select_role')}
+                formDescription={t('Users.form.select_role_description')}
               />
             </div>
 
             {!user?.id ? (
               <Alert variant="default">
                 <Info className="h-4 w-4" />
-                <AlertTitle>Password Creation</AlertTitle>
+                <AlertTitle>{t('Users.form.password_creation')}</AlertTitle>
                 <AlertDescription>
-                  When this user is created, they will receive an email with a
-                  link to create their password.
+                  {t('Users.form.password_creation_description')}
                 </AlertDescription>
               </Alert>
             ) : (
               <>
                 <Alert variant="default">
                   <CalendarClock className="h-4 w-4" />
-                  <AlertTitle>Logs Information</AlertTitle>
-                  <AlertDescription className="mt-3 space-y-1">
-                    <p>
-                      <b>Last logged in:</b>{' '}
+                  <AlertTitle>{t('Users.form.logs_information')}</AlertTitle>
+                  <AlertDescription className="mt-3 grid grid-cols-[120px_1fr] gap-2">
+                    <div className="font-bold">
+                      {t('Users.form.created_at')}
+                    </div>
+                    <div>
+                      {user?.createdAt && formatDateWithLocale(user.createdAt)}
+                    </div>
+
+                    <div className="font-bold">
+                      {t('Users.form.updated_at')}
+                    </div>
+                    <div>
+                      {user?.updatedAt && formatDateWithLocale(user.updatedAt)}
+                    </div>
+
+                    <div className="font-bold">
+                      {t('Users.form.last_logged_in')}
+                    </div>
+                    <div>
                       {user?.lastLoginAt
-                        ? formatDate(user.lastLoginAt, 'MM/dd/yyyy HH:mm')
-                        : 'User never logged in.'}
-                      <br />
-                    </p>
-                    <p>
-                      <b>Last password reset:</b>{' '}
-                      {user?.lastLoginAt
-                        ? formatDate(user.lastLoginAt, 'MM/dd/yyyy HH:mm')
-                        : 'User never logged in.'}
-                    </p>
+                        ? formatDateWithLocale(user.lastLoginAt)
+                        : t('Users.form.user_never_logged_in')}
+                    </div>
                   </AlertDescription>
                 </Alert>
 
@@ -219,10 +232,10 @@ export default function UserForm({
                     {isResettingPassword ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Sending...
+                        {t('Users.form.sending')}
                       </>
                     ) : (
-                      'Send Password Reset Link'
+                      t('Users.form.send_password_reset_link')
                     )}
                   </Button>
                 </div>
@@ -234,31 +247,31 @@ export default function UserForm({
           <Card className="space-y-4 p-6">
             <h3 className="flex items-center gap-2 text-lg font-semibold">
               <User className="h-5 w-5" />
-              General Information
+              {t('Users.form.general_information')}
             </h3>
 
             <FormSelectInput
               form={form}
               name="defaultTeamId"
-              label="Default Team"
+              label={t('Users.form.default_team')}
               options={[]}
-              placeholder="Select a team"
-              formDescription="The default team this user belongs to"
+              placeholder={t('Users.form.select_team')}
+              formDescription={t('Users.form.select_team_description')}
               classNames="col-span-2"
             />
 
             <FormSwitchInput
               form={form}
               name="isDriver"
-              label="Is Driver?"
-              formDescription="Enables driver features"
+              label={t('Users.form.is_driver_question')}
+              formDescription={t('Users.form.is_driver_description')}
             />
 
             <FormSwitchInput
               form={form}
               name="isActive"
-              label="Is User Active?"
-              formDescription="Inactive users cannot log in"
+              label={t('Users.form.is_user_active_question')}
+              formDescription={t('Users.form.is_user_active_description')}
             />
           </Card>
         </div>
@@ -272,11 +285,11 @@ export default function UserForm({
             {user?.id && (
               <ConfirmDialog
                 onConfirm={handleDelete}
-                title={'Delete User'}
-                description="Are you sure you want to delete this user? This action cannot be undone."
+                title={t('Users.delete_user_dialog.title')}
+                description={t('Users.delete_user_dialog.description')}
               >
                 <Button size="sm" variant="destructive">
-                  Delete User
+                  {t('Users.delete_user_dialog.title')}
                 </Button>
               </ConfirmDialog>
             )}
@@ -290,11 +303,11 @@ export default function UserForm({
                   navigate('/users');
                 }}
               >
-                Cancel
+                {t('Common.cancel')}
               </Button>
 
               <Button size="sm" type="submit" disabled={isLoading}>
-                Save Changes
+                {t('Common.save')}
                 {isLoading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
               </Button>
             </div>

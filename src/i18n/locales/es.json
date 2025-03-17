@@ -2,16 +2,11 @@
   "Common": {
     "settings": "Configuraciones",
     "signOut": "Cerrar sesión",
-    "language": "Idioma",
-    "english": "Inglés",
-    "spanish": "Español",
-    "portuguese": "Português",
-    "light": "Claro",
-    "dark": "Oscuro",
-    "system": "Sistema",
     "edit": "Editar",
     "delete": "Eliminar",
+    "delete_description": "¿Estás seguro de querer eliminar? Esta acción no se puede deshacer.",
     "save": "Guardar",
+    "cancel": "Cancelar",
     "actions": "Acciones",
     "no_results": "Sin resultados",
     "page": "Página",
@@ -22,7 +17,7 @@
     "search": "Buscar",
     "name": "Nombre",
     "phone": "Teléfono",
-    "cancel": "Cancelar"
+    "upload_photo": "Subir Foto"
   },
   "Titles": {
     "Dashboard": "Tablero",
@@ -88,5 +83,69 @@
     "light": "Claro",
     "dark": "Oscuro",
     "system": "Sistema"
+  },
+  "Language": {
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "portuguese": "Portugués"
+  },
+  "Users": {
+    "title": "Usuarios",
+    "add_user": "Agregar Usuario",
+    "edit_user": "Editar Usuario",
+    "delete_user": "Eliminar Usuario",
+    "cancel": "Cancelar",
+    "save_changes": "Guardar Cambios",
+    "table": {
+      "name": "Nombre",
+      "username": "Nombre de Usuario",
+      "primary_phone": "Teléfono Principal",
+      "role": "Rol",
+      "is_driver_question": "¿Es Conductor?",
+      "actions": "Acciones"
+    },
+    "form": {
+      "title": "Información del Usuario",
+      "personal_information": "Información Personal",
+      "profile_photo": "Foto de Perfil",
+      "upload_photo": "Subir Foto",
+      "upload_photo_description": "Sube una foto de perfil (opcional).",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "authentication_and_permissions": "Autenticación y Permisos",
+      "username": "Nombre de Usuario",
+      "role": "Rol",
+      "select_role": "Seleccionar un rol",
+      "select_role_description": "Asignar un rol para determinar los permisos.",
+      "password_creation": "Creación de Contraseña",
+      "password_creation_description": "Cuando se cree este usuario, recibirá un correo electrónico con un enlace para crear su contraseña.",
+      "general_information": "Información General",
+      "default_team": "Equipo Predeterminado",
+      "select_team": "Seleccionar un equipo",
+      "select_team_description": "El equipo predeterminado al que pertenece este usuario.",
+      "is_driver_question": "¿Es Conductor?",
+      "is_driver_description": "Habilitar funciones de conductor para este usuario.",
+      "is_user_active_question": "¿Está Activo el Usuario?",
+      "is_user_active_description": "Los usuarios inactivos no pueden acceder al sistema.",
+      "logs_information": "Información de Registros",
+      "last_logged_in": "Último inicio de sesión",
+      "last_password_reset": "Último restablecimiento de contraseña",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el",
+      "send_password_reset_link": "Enviar enlace de restablecimiento de contraseña",
+      "sending": "Enviando...",
+      "user_never_logged_in": "El usuario nunca ha iniciado sesión."
+    },
+    "password_reset": {
+      "reset_link_sent_successfully": "Enlace de restablecimiento de contraseña enviado con éxito.",
+      "failed_to_send_reset_link": "Error al enviar el enlace de restablecimiento de contraseña."
+    },
+    "delete_user_dialog": {
+      "title": "Eliminar Usuario",
+      "description": "¿Estás seguro de querer eliminar este usuario? Esta acción no se puede deshacer."
+    }
   }
 }

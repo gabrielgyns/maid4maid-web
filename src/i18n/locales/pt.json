@@ -2,16 +2,11 @@
   "Common": {
     "settings": "Configurações",
     "signOut": "Terminar sessão",
-    "language": "Idioma",
-    "english": "Inglês",
-    "spanish": "Espanhol",
-    "portuguese": "Português",
-    "light": "Claro",
-    "dark": "Escuro",
-    "system": "Sistema",
     "edit": "Editar",
     "delete": "Deletar",
+    "delete_description": "Tem certeza que deseja deletar? Esta ação não pode ser revertida.",
     "save": "Salvar",
+    "cancel": "Cancelar",
     "actions": "Ações",
     "no_results": "Sem resultados",
     "page": "Página",
@@ -22,7 +17,7 @@
     "search": "Pesquisar",
     "name": "Nome",
     "phone": "Telefone",
-    "cancel": "Cancelar"
+    "upload_photo": "Carregar Foto"
   },
   "Titles": {
     "Dashboard": "Dashboard",
@@ -88,5 +83,69 @@
     "light": "Claro",
     "dark": "Escuro",
     "system": "Sistema"
+  },
+  "Language": {
+    "language": "Idioma",
+    "english": "Inglês",
+    "spanish": "Espanhol",
+    "portuguese": "Português"
+  },
+  "Users": {
+    "title": "Usuários",
+    "add_user": "Adicionar Usuário",
+    "edit_user": "Editar Usuário",
+    "delete_user": "Excluir Usuário",
+    "cancel": "Cancelar",
+    "save_changes": "Salvar Alterações",
+    "table": {
+      "name": "Nome",
+      "username": "Nome de Usuário",
+      "primary_phone": "Telefone Principal",
+      "role": "Função",
+      "is_driver_question": "É Motorista?",
+      "actions": "Ações"
+    },
+    "form": {
+      "title": "Informações do Usuário",
+      "personal_information": "Informações Pessoais",
+      "profile_photo": "Foto do Perfil",
+      "upload_photo": "Enviar Foto",
+      "upload_photo_description": "Envie uma foto de perfil (opcional).",
+      "first_name": "Nome",
+      "last_name": "Sobrenome",
+      "email": "Email",
+      "phone": "Telefone",
+      "authentication_and_permissions": "Autenticação e Permissões",
+      "username": "Nome de Usuário",
+      "role": "Função",
+      "select_role": "Selecione uma função",
+      "select_role_description": "Atribua uma função para determinar as permissões.",
+      "password_creation": "Criação de Senha",
+      "password_creation_description": "Quando este usuário for criado, ele receberá um email com um link para criar sua senha.",
+      "general_information": "Informações Gerais",
+      "default_team": "Equipe Padrão",
+      "select_team": "Selecione uma equipe",
+      "select_team_description": "A equipe padrão à qual este usuário pertence.",
+      "is_driver_question": "É Motorista?",
+      "is_driver_description": "Habilitar recursos de motorista para este usuário.",
+      "is_user_active_question": "Usuário está Ativo?",
+      "is_user_active_description": "Usuários inativos não podem acessar o sistema.",
+      "logs_information": "Informações de Logs",
+      "last_logged_in": "Último acesso",
+      "last_password_reset": "Última redefinição de senha",
+      "created_at": "Criado em",
+      "updated_at": "Atualizado em",
+      "send_password_reset_link": "Enviar link de redefinição de senha",
+      "sending": "Enviando...",
+      "user_never_logged_in": "Usuário nunca acessou o sistema."
+    },
+    "password_reset": {
+      "reset_link_sent_successfully": "Link de redefinição de senha enviado com sucesso.",
+      "failed_to_send_reset_link": "Erro ao enviar link de redefinição de senha."
+    },
+    "delete_user_dialog": {
+      "title": "Deletar Usuário",
+      "description": "Tem certeza que deseja deletar este usuário? Esta ação não pode ser revertida."
+    }
   }
 }
