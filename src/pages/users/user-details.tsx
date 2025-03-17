@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -14,6 +15,7 @@ import UserForm from './user-form';
 export default function UserDetails() {
   const { id } = useParams();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const {
@@ -38,15 +40,15 @@ export default function UserDetails() {
         await updateUserMutation.mutateAsync(updateData);
 
         toast({
-          title: 'Success',
-          description: 'User updated successfully',
+          title: t('Common.success'),
+          description: t('Users.user_updated_successfully'),
         });
       } else {
         await createUserMutation.mutateAsync(data as User);
 
         toast({
-          title: 'Success',
-          description: 'User created successfully',
+          title: t('Common.success'),
+          description: t('Users.user_created_successfully'),
         });
       }
 
@@ -55,8 +57,8 @@ export default function UserDetails() {
       console.error('Error saving user:', error);
 
       toast({
-        title: 'Error',
-        description: 'Failed to save user. Please try again.',
+        title: t('Users.error'),
+        description: t('Users.error'),
         variant: 'destructive',
       });
     }
@@ -67,8 +69,8 @@ export default function UserDetails() {
       await deleteUserMutation.mutateAsync(userId);
 
       toast({
-        title: 'Success',
-        description: 'User deleted successfully',
+        title: t('Common.success'),
+        description: t('Users.user_deleted_successfully'),
       });
 
       navigate('/users');
@@ -76,21 +78,23 @@ export default function UserDetails() {
       console.error('Error deleting user:', error);
 
       toast({
-        title: 'Error',
-        description: 'Failed to delete user. Please try again.',
+        title: t('Common.error'),
+        description: t('Users.failed_to_delete_user'),
         variant: 'destructive',
       });
     }
   };
 
   if (isUserLoading) {
-    return <div className="flex justify-center p-8">Loading user data...</div>;
+    return (
+      <div className="flex justify-center p-8">{t('Users.user_loading')}</div>
+    );
   }
 
   if (userError && id) {
     return (
       <div className="rounded-md bg-destructive/15 p-4 text-destructive">
-        Error loading user: {userError.message}
+        {t('Users.user_error')}
       </div>
     );
   }

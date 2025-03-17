@@ -146,6 +146,14 @@
     "delete_user_dialog": {
       "title": "Eliminar Usuario",
       "description": "¿Estás seguro de querer eliminar este usuario? Esta acción no se puede deshacer."
-    }
+    },
+    "user_created_successfully": "Usuario creado con éxito!",
+    "user_updated_successfully": "Usuario actualizado con éxito!",
+    "user_deleted_successfully": "Usuario eliminado con éxito!",
+    "user_error": "Error al cargar los datos del usuario.",
+    "user_loading": "Cargando datos del usuario...",
+    "failed_to_delete_user": "Error al eliminar el usuario. Por favor, inténtelo de nuevo.",
+    "failed_to_create_user": "Error al crear el usuario. Por favor, inténtelo de nuevo.",
+    "failed_to_update_user": "Error al actualizar el usuario. Por favor, inténtelo de nuevo."
   }
 }

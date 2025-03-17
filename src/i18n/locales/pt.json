@@ -146,6 +146,14 @@
     "delete_user_dialog": {
       "title": "Deletar Usuário",
       "description": "Tem certeza que deseja deletar este usuário? Esta ação não pode ser revertida."
-    }
+    },
+    "user_created_successfully": "Usuário criado com sucesso!",
+    "user_updated_successfully": "Usuário atualizado com sucesso!",
+    "user_deleted_successfully": "Usuário deletado com sucesso!",
+    "user_error": "Erro ao carregar os dados do usuário.",
+    "user_loading": "Carregando dados do usuário...",
+    "failed_to_delete_user": "Erro ao deletar o usuário. Por favor, tente novamente.",
+    "failed_to_create_user": "Erro ao criar o usuário. Por favor, tente novamente.",
+    "failed_to_update_user": "Erro ao atualizar o usuário. Por favor, tente novamente."
   }
 }
