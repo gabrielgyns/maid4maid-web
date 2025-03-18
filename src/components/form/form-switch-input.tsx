@@ -51,7 +51,7 @@ export default function FormSwitchInput({
           <FormControl>
             <Switch
               disabled={disabled}
-              checked={field.value}
+              checked={Boolean(field.value)}
               onCheckedChange={field.onChange}
               aria-readonly
             />

@@ -22,10 +22,10 @@ const LanguageSwitcher = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="default">
           {i18n.language === 'pt'
-            ? t('Common.portuguese')
+            ? t('Language.portuguese')
             : i18n.language === 'es'
-              ? t('Common.spanish')
-              : t('Common.english')}
+              ? t('Language.spanish')
+              : t('Language.english')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -34,21 +34,21 @@ const LanguageSwitcher = () => {
             void changeLanguage('en');
           }}
         >
-          {t('Common.english')}
+          {t('Language.english')}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             void changeLanguage('es');
           }}
         >
-          {t('Common.spanish')}
+          {t('Language.spanish')}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             void changeLanguage('pt');
           }}
         >
-          {t('Common.portuguese')}
+          {t('Language.portuguese')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

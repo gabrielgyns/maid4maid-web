@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { CircleCheck, CircleX, PlusCircle } from 'lucide-react';
 
@@ -18,6 +19,7 @@ type RowType = {
 
 export default function Users() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user } = useUserStore();
   const deleteUserMutation = useDeleteUser();
 
@@ -64,7 +66,7 @@ export default function Users() {
     },
     {
       accessorKey: 'fullName',
-      header: 'Name',
+      header: t('Users.table.name'),
       cell: ({ row }: RowType) => {
         const youHtml = (
           <span className="text-xs text-muted-foreground">(You)</span>
@@ -80,15 +82,15 @@ export default function Users() {
     },
     {
       accessorKey: 'login',
-      header: 'Login',
+      header: t('Users.table.username'),
     },
     {
       accessorKey: 'phone',
-      header: 'Primary Phone',
+      header: t('Users.table.primary_phone'),
     },
     {
       accessorKey: 'isDriver',
-      header: 'Is Driver?',
+      header: t('Users.table.is_driver_question'),
       cell: ({ row }: RowType) =>
         row.original.isDriver ? (
           <CircleCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
@@ -98,7 +100,7 @@ export default function Users() {
     },
     {
       accessorKey: 'actions',
-      header: 'Actions',
+      header: t('Users.table.actions'),
       cell: ({ row }: RowType) => (
         <ActionsCell
           row={row}
@@ -106,8 +108,8 @@ export default function Users() {
           onDelete={async () => {
             await deleteUserMutation.mutateAsync(row.original.id!);
           }}
-          deleteTitle="Delete User"
-          deleteDescription="Are you sure you want to delete this user? This action cannot be undone."
+          deleteTitle={t('Users.delete_user_dialog.title')}
+          deleteDescription={t('Users.delete_user_dialog.description')}
         />
       ),
     },
@@ -128,7 +130,7 @@ export default function Users() {
         className="mb-4 self-end"
         type="button"
       >
-        <PlusCircle className="mr-2 h-4 w-4" /> Add New User
+        <PlusCircle className="mr-2 h-4 w-4" /> {t('Users.add_user')}
       </Button>
       <DataTable columns={columns} data={users ?? []} />
     </div>

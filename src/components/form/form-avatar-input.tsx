@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent, useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Upload } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -35,6 +36,7 @@ export default function FormAvatarInput({
   formDescription,
   disabled = false,
 }: FormAvatarInputProps) {
+  const { t } = useTranslation();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -100,7 +102,7 @@ export default function FormAvatarInput({
                 className="h-8 px-3 text-xs"
               >
                 <Upload className="mr-2 h-3.5 w-3.5" />
-                Upload Photo
+                {t('Common.upload_photo')}
               </Button>
             </div>
           </FormControl>

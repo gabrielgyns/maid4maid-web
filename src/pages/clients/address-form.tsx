@@ -14,6 +14,7 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -46,7 +47,14 @@ export default function AddressForm({
   const form = useForm<FormData>({
     resolver: zodResolver(addressSchema),
     mode: 'onBlur',
-    defaultValues: address,
+    defaultValues: {
+      // Default values from schema as boolean
+      isDefault: false,
+      isBilling: false,
+      isActive: true,
+      // Override with address values if available
+      ...address,
+    },
   });
 
   const handleFormSubmit = async (data: FormData) => {
@@ -69,10 +77,12 @@ export default function AddressForm({
     <Sheet
       open={open}
       onOpenChange={(isOpen) => {
-        if (!isOpen) {
+        if (isOpen) {
+          setOpen(true);
+        } else {
           form.reset();
+          setOpen(false);
         }
-        setOpen(isOpen);
       }}
     >
       <SheetTrigger asChild>{contentTrigger}</SheetTrigger>
@@ -132,7 +142,10 @@ export default function AddressForm({
               form={form}
               label="Charge By (optional)"
               name="chargeBy"
-              options={Object.values(chargeByEnum.Values)}
+              options={Object.values(chargeByEnum.Values).map((value) => ({
+                id: value,
+                name: value,
+              }))}
             />
 
             <FormInput
@@ -147,7 +160,10 @@ export default function AddressForm({
               form={form}
               label="Entry Method (optional)"
               name="entryMethod"
-              options={Object.values(entryMethodEnum.Values)}
+              options={Object.values(entryMethodEnum.Values).map((value) => ({
+                id: value,
+                name: value,
+              }))}
             />
             <FormInput
               form={form}
@@ -181,19 +197,23 @@ export default function AddressForm({
 
           <div className="flex justify-end gap-2">
             {/* TODO: Let the user know they gonna lost the filled inputs */}
-            <Button
-              variant="ghost"
-              onClick={() => {
-                form.reset();
-                setOpen(false);
-              }}
-            >
-              Cancel
-            </Button>
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  form.reset();
+                  setOpen(false);
+                }}
+                type="button"
+              >
+                Cancel
+              </Button>
+            </SheetClose>
 
             <Button
               disabled={updateAddressById.isPending || createAddress.isPending}
               onClick={form.handleSubmit(handleFormSubmit)}
+              type="button"
             >
               {!address ? 'Add Address' : 'Save changes'}
             </Button>
