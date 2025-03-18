@@ -13,7 +13,7 @@ import { useUserStore } from '@/stores/user.store';
 
 type RowType = {
   row: {
-    original: User & { role: { name: string } };
+    original: User;
   };
 };
 
