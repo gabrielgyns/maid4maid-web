@@ -24,6 +24,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
+import { useRoles } from '@/hooks/queries/use-roles';
 import { useResetUserPassword } from '@/hooks/queries/use-users';
 import { useFormatDate } from '@/hooks/use-format-date';
 import { useToast } from '@/hooks/use-toast';
@@ -46,18 +47,20 @@ export default function UserForm({
   onDelete,
 }: UserFormProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const { formatDateWithLocale } = useFormatDate();
-  const navigate = useNavigate();
   const [isResettingPassword, setIsResettingPassword] = useState(false);
 
   const resetPasswordMutation = useResetUserPassword();
+  const { data: roles = [], isLoading: isRolesLoading } = useRoles();
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     mode: 'onBlur',
     values: user ? (user as UserFormData) : undefined,
     defaultValues: {
+      roleId: user?.roleId || '',
       isDriver: false,
       isActive: true,
     },
@@ -97,6 +100,9 @@ export default function UserForm({
       setIsResettingPassword(false);
     }
   };
+
+  const userIsMaster =
+    user?.roleId === roles.find((role) => role.name === 'Master')?.id;
 
   return (
     <Form {...form}>
@@ -176,7 +182,13 @@ export default function UserForm({
                 form={form}
                 name="roleId"
                 label={t('Users.form.role')}
-                options={[]}
+                options={roles
+                  .filter((role) => userIsMaster || role.name !== 'Master')
+                  .map((role) => ({
+                    id: role.id || '',
+                    name: role.name || '',
+                  }))}
+                disabled={isRolesLoading || userIsMaster}
                 placeholder={t('Users.form.select_role')}
                 formDescription={t('Users.form.select_role_description')}
               />

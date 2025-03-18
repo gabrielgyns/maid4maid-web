@@ -26,7 +26,7 @@ import {
 type FormInputProps = {
   form: UseFormReturn<any>;
   name: string;
-  options: any[];
+  options: { id: string; name: string }[];
   label: string;
   placeholder?: string;
   formDescription?: string;
@@ -41,6 +41,7 @@ export default function FormSelectInput({
   formDescription,
   placeholder = 'Select an option',
   classNames,
+  disabled,
 }: Omit<FormInputProps, 'className'>) {
   return (
     <FormField
@@ -50,16 +51,20 @@ export default function FormSelectInput({
         <FormItem className={classNames}>
           <FormLabel>{label}</FormLabel>
 
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+            disabled={disabled}
+          >
             <FormControl>
               <SelectTrigger className="!mt-0.5">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {options.map((value) => (
-                <SelectItem key={value} value={value}>
-                  {transformConstant(value)}
+              {options.map(({ id, name }) => (
+                <SelectItem key={id} value={id}>
+                  {transformConstant(name)}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -151,14 +151,24 @@ export function ClientForm({
                   form={form}
                   label="Preferred Frequency"
                   name="preferredFrequency"
-                  options={Object.values(preferredFrequencyEnum.Values)}
+                  options={Object.values(preferredFrequencyEnum.Values).map(
+                    (value) => ({
+                      id: value,
+                      name: value,
+                    }),
+                  )}
                 />
 
                 <FormSelectInput
                   form={form}
                   label="Preferred Day"
                   name="preferredDay"
-                  options={Object.values(preferredDayEnum.Values)}
+                  options={Object.values(preferredDayEnum.Values).map(
+                    (value) => ({
+                      id: value,
+                      name: value,
+                    }),
+                  )}
                 />
               </div>
             </Card>
@@ -174,7 +184,12 @@ export function ClientForm({
                 form={form}
                 label="Preferred Payment Method"
                 name="preferredPaymentMethod"
-                options={Object.values(paymentMethodEnum.Values)}
+                options={Object.values(paymentMethodEnum.Values).map(
+                  (value) => ({
+                    id: value,
+                    name: value,
+                  }),
+                )}
               />
 
               <FormTextareaInput

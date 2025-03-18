@@ -25,7 +25,7 @@ export const addressService = {
   // When the client is new (not created yet), the address will go with the client (in POST /clients).
   async createAddress(clientId: string, addressData: Address) {
     const { data } = await api.post<Address>('/addresses', {
-      address: addressData,
+      ...addressData,
       clientId,
     });
 
