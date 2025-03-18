@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import { useRoles } from '@/hooks/queries/use-roles';
+import { useTeams } from '@/hooks/queries/use-teams';
 import { useResetUserPassword } from '@/hooks/queries/use-users';
 import { useFormatDate } from '@/hooks/use-format-date';
 import { useToast } from '@/hooks/use-toast';
@@ -54,6 +55,7 @@ export default function UserForm({
 
   const resetPasswordMutation = useResetUserPassword();
   const { data: roles = [], isLoading: isRolesLoading } = useRoles();
+  const { data: teams = [], isLoading: isTeamsLoading } = useTeams();
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
@@ -61,6 +63,7 @@ export default function UserForm({
     values: user ? (user as UserFormData) : undefined,
     defaultValues: {
       roleId: user?.roleId || '',
+      defaultTeamId: user?.defaultTeamId || '',
       isDriver: false,
       isActive: true,
     },
@@ -266,7 +269,11 @@ export default function UserForm({
               form={form}
               name="defaultTeamId"
               label={t('Users.form.default_team')}
-              options={[]}
+              options={teams.map((team) => ({
+                id: team.id || '',
+                name: team.name || '',
+              }))}
+              disabled={isTeamsLoading}
               placeholder={t('Users.form.select_team')}
               formDescription={t('Users.form.select_team_description')}
               classNames="col-span-2"
