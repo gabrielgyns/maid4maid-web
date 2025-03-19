@@ -1,12 +1,16 @@
+import { lazy, Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { AuthLayout } from '@/components/layouts/auth-layout';
 import { useAuth } from '@/contexts/auth-context';
-import CreatePasswordPage from '@/pages/create-password';
-import ForgotPasswordPage from '@/pages/forgot-password';
-import Login from '@/pages/login';
-import Register from '@/pages/register';
-import ResetPasswordPage from '@/pages/reset-password';
+
+const Login = lazy(() => import('@/pages/login'));
+const Register = lazy(() => import('@/pages/register'));
+const ForgotPasswordPage = lazy(() => import('@/pages/forgot-password'));
+const ResetPasswordPage = lazy(() => import('@/pages/reset-password'));
+const CreatePasswordPage = lazy(() => import('@/pages/create-password'));
+
+const LoadingFallback = () => <div>Loading...</div>;
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -27,7 +31,9 @@ export const publicRoutes = [
         path: 'login',
         element: (
           <PublicRoute>
-            <Login />
+            <Suspense fallback={<LoadingFallback />}>
+              <Login />
+            </Suspense>
           </PublicRoute>
         ),
       },
@@ -35,7 +41,9 @@ export const publicRoutes = [
         path: 'register',
         element: (
           <PublicRoute>
-            <Register />
+            <Suspense fallback={<LoadingFallback />}>
+              <Register />
+            </Suspense>
           </PublicRoute>
         ),
       },
@@ -43,7 +51,9 @@ export const publicRoutes = [
         path: 'forgot-password',
         element: (
           <PublicRoute>
-            <ForgotPasswordPage />
+            <Suspense fallback={<LoadingFallback />}>
+              <ForgotPasswordPage />
+            </Suspense>
           </PublicRoute>
         ),
       },
@@ -51,7 +61,9 @@ export const publicRoutes = [
         path: 'reset-password',
         element: (
           <PublicRoute>
-            <ResetPasswordPage />
+            <Suspense fallback={<LoadingFallback />}>
+              <ResetPasswordPage />
+            </Suspense>
           </PublicRoute>
         ),
       },
@@ -59,7 +71,9 @@ export const publicRoutes = [
         path: 'create-password',
         element: (
           <PublicRoute>
-            <CreatePasswordPage />
+            <Suspense fallback={<LoadingFallback />}>
+              <CreatePasswordPage />
+            </Suspense>
           </PublicRoute>
         ),
       },

@@ -1,19 +1,20 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import AppLayout from '@/components/layouts/app-layout';
 import { useAuth } from '@/contexts/auth-context';
-import Clients from '@/pages/clients';
-import ClientsDetails from '@/pages/clients/client-details';
-import Dashboard from '@/pages/dashboard';
-import Users from '@/pages/users';
-import UserDetails from '@/pages/users/user-details';
 import { RouteMetadata } from '@/schemas/route.types';
 import { useOrganizationStore } from '@/stores/organization.store';
 import { useUserStore } from '@/stores/user.store';
-// import { Jobs } from "@/pages/jobs";
-// import { Teams } from "@/pages/teams";
-// import { Profile } from "@/pages/profile";
+
+const Dashboard = lazy(() => import('@/pages/dashboard'));
+const Clients = lazy(() => import('@/pages/clients'));
+const ClientsDetails = lazy(() => import('@/pages/clients/client-details'));
+const Users = lazy(() => import('@/pages/users'));
+const UserDetails = lazy(() => import('@/pages/users/user-details'));
+const Teams = lazy(() => import('@/pages/teams'));
+
+const LoadingFallback = () => <div>Loading...</div>;
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -22,15 +23,13 @@ const ProtectedRoute = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Using void coz: @typescript-eslint/no-floating-promises
-      // I don't see any problem with this right now.
       void fetchProfile();
       void fetchOrganization();
     }
   }, [fetchOrganization, fetchProfile, isAuthenticated]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // TODO: Loader Component
+    return <LoadingFallback />;
   }
 
   if (!isAuthenticated) {
@@ -45,7 +44,11 @@ const clientsRoutes = {
   children: [
     {
       path: '',
-      element: <Clients />,
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <Clients />
+        </Suspense>
+      ),
       handle: {
         title: 'Clients',
         breadcrumbs: [{ label: 'Dashboard', path: '/' }, { label: 'Clients' }],
@@ -53,7 +56,11 @@ const clientsRoutes = {
     },
     {
       path: 'new',
-      element: <ClientsDetails />,
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <ClientsDetails />
+        </Suspense>
+      ),
       handle: {
         title: 'Clients',
         breadcrumbs: [
@@ -65,7 +72,11 @@ const clientsRoutes = {
     },
     {
       path: 'edit/:id',
-      element: <ClientsDetails />,
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <ClientsDetails />
+        </Suspense>
+      ),
       handle: {
         title: 'Clients',
         breadcrumbs: [
@@ -83,7 +94,11 @@ const userRoutes = {
   children: [
     {
       path: '',
-      element: <Users />,
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <Users />
+        </Suspense>
+      ),
       handle: {
         title: 'Users',
         breadcrumbs: [{ label: 'Dashboard', path: '/' }, { label: 'Users' }],
@@ -91,7 +106,11 @@ const userRoutes = {
     },
     {
       path: 'new',
-      element: <UserDetails />,
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <UserDetails />
+        </Suspense>
+      ),
       handle: {
         title: 'Users',
         breadcrumbs: [
@@ -103,7 +122,11 @@ const userRoutes = {
     },
     {
       path: 'edit/:id',
-      element: <UserDetails />,
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <UserDetails />
+        </Suspense>
+      ),
       handle: {
         title: 'Users',
         breadcrumbs: [
@@ -111,6 +134,24 @@ const userRoutes = {
           { label: 'Users', path: '/users' },
           { label: 'Edit User' },
         ],
+      } as RouteMetadata,
+    },
+  ],
+};
+
+const teamRoutes = {
+  path: 'teams',
+  children: [
+    {
+      path: '',
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <Teams />
+        </Suspense>
+      ),
+      handle: {
+        title: 'Teams',
+        breadcrumbs: [{ label: 'Dashboard', path: '/' }, { label: 'Teams' }],
       } as RouteMetadata,
     },
   ],
@@ -126,7 +167,11 @@ export const protectedRoutes = [
         children: [
           {
             index: true,
-            element: <Dashboard />,
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <Dashboard />
+              </Suspense>
+            ),
             handle: {
               title: 'Dashboard',
               breadcrumbs: [{ label: 'Dashboard' }],
@@ -134,13 +179,10 @@ export const protectedRoutes = [
           },
           clientsRoutes,
           userRoutes,
+          teamRoutes,
           // {
           // 	path: "jobs",
           // 	element: <Jobs />,
-          // },
-          // {
-          // 	path: "teams",
-          // 	element: <Teams />,
           // },
           // {
           // 	path: "profile",

@@ -154,6 +154,52 @@
     "user_loading": "Cargando datos del usuario...",
     "failed_to_delete_user": "Error al eliminar el usuario. Por favor, inténtelo de nuevo.",
     "failed_to_create_user": "Error al crear el usuario. Por favor, inténtelo de nuevo.",
-    "failed_to_update_user": "Error al actualizar el usuario. Por favor, inténtelo de nuevo."
+    "failed_to_update_user": "Error al actualizar el usuario. Por favor, inténtelo de nuevo.",
+    "usage_alert": {
+      "title": "Uso de Usuarios",
+      "upgrade_plan_button": "Mejorar Plan",
+      "max_users_reached": "Has alcanzado el número máximo de usuarios permitidos en tu plan actual.",
+      "upgrade_plan_description": "Mejora tu plan para usuarios y funciones adicionales.",
+      "near_limit": "Te estás acercando a tu límite de usuarios. Puedes agregar {count} {count, plural, one {usuario más} other {usuarios más}} con tu plan actual.",
+      "add_users_description": "Puedes agregar {count} {count, plural, one {usuario más} other {usuarios más}} con tu plan actual."
+    }
+  },
+  "Teams": {
+    "title": "Equipos",
+    "team": "Equipo",
+    "add_team": "Agregar Equipo",
+    "edit_team": "Editar Equipo",
+    "delete_team": "Eliminar Equipo",
+    "create_success": "Equipo creado con éxito",
+    "create_error": "Error al crear equipo",
+    "update_success": "Equipo actualizado con éxito",
+    "update_error": "Error al actualizar equipo",
+    "delete_success": "Equipo eliminado con éxito",
+    "delete_error": "Error al eliminar equipo",
+    "limit_reached": "Has alcanzado el número máximo de equipos permitidos en tu plan actual.",
+    "delete_team_dialog": {
+      "title": "Eliminar Equipo",
+      "description": "¿Estás seguro de querer eliminar este equipo? Esta acción no se puede deshacer."
+    },
+    "table": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "is_active": "Activo",
+      "actions": "Acciones",
+      "color": "Color"
+    },
+    "form": {
+      "title": "Formulario de Equipo",
+      "team_information": "Información del Equipo",
+      "team_information_description": "Crea o actualiza información del equipo. Los equipos pueden ser asignados a trabajos y usuarios.",
+      "name": "Nombre",
+      "description": "Descripción",
+      "color": "Color",
+      "color_description": "Elige un color para identificar este equipo en horarios y asignaciones.",
+      "is_active_question": "¿Está activo este equipo?",
+      "is_active_description": "Los equipos inactivos no estarán disponibles para asignaciones de trabajo.",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    }
   }
 }
