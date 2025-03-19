@@ -154,6 +154,52 @@
     "user_loading": "Carregando dados do usuário...",
     "failed_to_delete_user": "Erro ao deletar o usuário. Por favor, tente novamente.",
     "failed_to_create_user": "Erro ao criar o usuário. Por favor, tente novamente.",
-    "failed_to_update_user": "Erro ao atualizar o usuário. Por favor, tente novamente."
+    "failed_to_update_user": "Erro ao atualizar o usuário. Por favor, tente novamente.",
+    "usage_alert": {
+      "title": "Uso de Usuários",
+      "upgrade_plan_button": "Atualizar Plano",
+      "max_users_reached": "Você atingiu o número máximo de usuários permitidos em seu plano atual.",
+      "upgrade_plan_description": "Atualize seu plano para usuários e recursos adicionais.",
+      "near_limit": "Você está se aproximando do limite de usuários. Você pode adicionar mais {count} {count, plural, one {usuário} other {usuários}} com seu plano atual.",
+      "add_users_description": "Você pode adicionar mais {count} {count, plural, one {usuário} other {usuários}} com seu plano atual."
+    }
+  },
+  "Teams": {
+    "title": "Equipes",
+    "team": "Equipe",
+    "add_team": "Adicionar Equipe",
+    "edit_team": "Editar Equipe",
+    "delete_team": "Deletar Equipe",
+    "create_success": "Equipe criada com sucesso",
+    "create_error": "Erro ao criar equipe",
+    "update_success": "Equipe atualizada com sucesso",
+    "update_error": "Erro ao atualizar equipe",
+    "delete_success": "Equipe deletada com sucesso",
+    "delete_error": "Erro ao deletar equipe",
+    "limit_reached": "Você atingiu o número máximo de equipes permitidas em seu plano atual.",
+    "delete_team_dialog": {
+      "title": "Deletar Equipe",
+      "description": "Tem certeza que deseja deletar esta equipe? Esta ação não pode ser revertida."
+    },
+    "table": {
+      "name": "Nome",
+      "description": "Descrição",
+      "is_active": "Ativo",
+      "actions": "Ações",
+      "color": "Cor"
+    },
+    "form": {
+      "title": "Formulário de Equipe",
+      "team_information": "Informações da Equipe",
+      "team_information_description": "Crie ou atualize informações da equipe. Equipes podem ser atribuídas a trabalhos e usuários.",
+      "name": "Nome",
+      "description": "Descrição",
+      "color": "Cor",
+      "color_description": "Escolha uma cor para identificar esta equipe em agendamentos e atribuições.",
+      "is_active_question": "Esta equipe está ativa?",
+      "is_active_description": "Equipes inativas não estarão disponíveis para atribuições de trabalho.",
+      "created_at": "Criado em",
+      "updated_at": "Atualizado em"
+    }
   }
 }

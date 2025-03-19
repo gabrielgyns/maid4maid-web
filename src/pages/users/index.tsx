@@ -1,6 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { CircleCheck, CircleX, PlusCircle } from 'lucide-react';
+import {
+  CircleCheck,
+  CircleX,
+  PlusCircle,
+  Users as UsersIcon,
+} from 'lucide-react';
 
 import { DataTable } from '@/components/data-table';
 import { ActionsCell } from '@/components/data-table/actions-cell';
@@ -10,6 +15,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useDeleteUser, useUsers } from '@/hooks/queries/use-users';
 import { User } from '@/schemas/user.types';
 import { useUserStore } from '@/stores/user.store';
+
+import { UserUsageAlert } from './user-usage-alert';
 
 type RowType = {
   row: {
@@ -24,6 +31,9 @@ export default function Users() {
   const deleteUserMutation = useDeleteUser();
 
   const { data: users, isLoading, error } = useUsers();
+
+  // TODO: Plan limits - would typically come from user's subscription info
+  const maxUsers = 8;
 
   if (isLoading) {
     return (
@@ -125,14 +135,24 @@ export default function Users() {
 
   return (
     <div className="flex flex-col">
-      <Button
-        onClick={handleCreateNewUser}
-        className="mb-4 self-end"
-        type="button"
-      >
-        <PlusCircle className="mr-2 h-4 w-4" /> {t('Users.add_user')}
-      </Button>
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">
+          <UsersIcon className="mr-2 inline h-6 w-6" />
+          {t('Users.title')}
+        </h1>
+        <Button
+          onClick={handleCreateNewUser}
+          className="self-end"
+          type="button"
+          disabled={users && users.length >= maxUsers}
+        >
+          <PlusCircle className="mr-2 h-4 w-4" /> {t('Users.add_user')}
+        </Button>
+      </div>
+
       <DataTable columns={columns} data={users ?? []} />
+
+      <UserUsageAlert userCount={users?.length || 0} maxUsers={maxUsers} />
     </div>
   );
 }

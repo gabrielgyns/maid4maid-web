@@ -156,6 +156,52 @@
     "user_loading": "Loading user data...",
     "failed_to_delete_user": "Failed to delete user. Please try again.",
     "failed_to_create_user": "Failed to create user. Please try again.",
-    "failed_to_update_user": "Failed to update user. Please try again."
+    "failed_to_update_user": "Failed to update user. Please try again.",
+    "usage_alert": {
+      "title": "User Usage",
+      "upgrade_plan_button": "Upgrade Plan",
+      "max_users_reached": "You've reached the maximum number of users allowed in your current plan.",
+      "upgrade_plan_description": "Upgrade your plan for additional users and features.",
+      "near_limit": "You're approaching your user limit. You can add {count} more {count, plural, one {user} other {users}} with your current plan.",
+      "add_users_description": "You can add {count} more {count, plural, one {user} other {users}} with your current plan."
+    }
+  },
+  "Teams": {
+    "title": "Teams",
+    "team": "Team",
+    "add_team": "Add Team",
+    "edit_team": "Edit Team",
+    "delete_team": "Delete Team",
+    "create_success": "Team created successfully",
+    "create_error": "Error creating team",
+    "update_success": "Team updated successfully",
+    "update_error": "Error updating team",
+    "delete_success": "Team deleted successfully",
+    "delete_error": "Error deleting team",
+    "limit_reached": "You've reached the maximum number of teams allowed in your current plan.",
+    "delete_team_dialog": {
+      "title": "Delete Team",
+      "description": "Are you sure you want to delete this team? This action cannot be undone."
+    },
+    "table": {
+      "name": "Name",
+      "description": "Description",
+      "is_active": "Active",
+      "actions": "Actions",
+      "color": "Color"
+    },
+    "form": {
+      "title": "Team Form",
+      "team_information": "Team Information",
+      "team_information_description": "Create or update team information. Teams can be assigned to jobs and users.",
+      "name": "Name",
+      "description": "Description",
+      "color": "Color",
+      "color_description": "Choose a color to identify this team in schedules and assignments.",
+      "is_active_question": "Is this team active?",
+      "is_active_description": "Inactive teams won't be available for job assignments.",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    }
   }
 }
