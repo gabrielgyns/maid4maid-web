@@ -21,6 +21,8 @@ import {
   SelectValue,
 } from '../ui/select';
 
+import './calendar-dark-theme.css';
+
 interface Job {
   id: string;
   title: string;
