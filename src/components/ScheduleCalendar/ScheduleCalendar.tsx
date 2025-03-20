@@ -14,6 +14,13 @@ import { enUS, ptBR } from 'date-fns/locale';
 
 import { Button } from '../ui/button';
 import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../ui/dialog';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -335,6 +342,8 @@ export function ScheduleCalendar({
   >('timeGridWeek');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
   const getCurrentLocale = () => {
     return i18n.language.startsWith('pt') ? 'pt-br' : 'en-us';
@@ -373,8 +382,17 @@ export function ScheduleCalendar({
   };
 
   const handleEventClick = (clickInfo: EventClickArg) => {
+    const jobId = clickInfo.event.id;
+    // Find the job in the mock data (replace with API call in real implementation)
+    const job = mockJobs.find((job) => job.id === jobId);
+
+    if (job) {
+      setSelectedJob(job);
+      setIsJobModalOpen(true);
+    }
+
     if (onJobSelect) {
-      onJobSelect(clickInfo.event.id);
+      onJobSelect(jobId);
     }
   };
 
@@ -448,7 +466,7 @@ export function ScheduleCalendar({
       const statusColor = info.event.extendedProps.statusColor as string;
 
       return (
-        <div className="overflow-hidden p-1">
+        <div className="h-full cursor-pointer overflow-hidden p-1">
           <div className="truncate text-sm font-semibold">
             {info.event.title}
           </div>
@@ -479,6 +497,7 @@ export function ScheduleCalendar({
     <div className="">
       <div className="flex items-center justify-between border-b py-4">
         <div className="flex items-center gap-4">
+          {/* Month, Week, Day Buttons */}
           <div className="flex gap-2">
             <Button
               variant={currentView === 'dayGridMonth' ? 'default' : 'outline'}
@@ -502,8 +521,10 @@ export function ScheduleCalendar({
               {t('Schedule.day')}
             </Button>
           </div>
+          {/* Calendar Title */}
           <div className="text-lg font-semibold">{formatCalendarTitle()}</div>
         </div>
+        {/* Today, Prev, Next Buttons */}
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={handlePrevClick}>
             &lt;
@@ -516,11 +537,13 @@ export function ScheduleCalendar({
           </Button>
         </div>
       </div>
+
       <div className="py-3">
         <div className="flex items-center gap-4">
           <div className="text-sm font-medium">
             {t('Schedule.team_filter')}:
           </div>
+          {/* Team Filter */}
           <Select
             value={selectedTeam || 'all'}
             onValueChange={(value) =>
@@ -551,6 +574,149 @@ export function ScheduleCalendar({
       <div className="h-[calc(100vh-16rem)]">
         <FullCalendar ref={calendarRef} {...calendarOptions} />
       </div>
+
+      {/* Job Details Modal */}
+      <Dialog open={isJobModalOpen} onOpenChange={setIsJobModalOpen}>
+        <DialogContent className="sm:max-w-[550px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl">
+              {t('Schedule.job_details')}
+            </DialogTitle>
+          </DialogHeader>
+
+          {selectedJob && (
+            <div className="space-y-6 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Common.name')}
+                  </h3>
+                  <p className="text-base font-medium">{selectedJob.title}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.status.status')}
+                  </h3>
+                  <div className="mt-1 flex items-center gap-2">
+                    <div
+                      className="h-3 w-3 rounded-full"
+                      style={{
+                        backgroundColor: eventStatusColors[selectedJob.status],
+                      }}
+                    />
+                    <span className="font-medium">
+                      {t(`Schedule.status.${selectedJob.status.toLowerCase()}`)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.team')}
+                  </h3>
+                  <div className="mt-1 flex items-center gap-2">
+                    {selectedJob.teamName ? (
+                      <>
+                        <div
+                          className="h-3 w-3 rounded-full"
+                          style={{ backgroundColor: selectedJob.teamColor }}
+                        />
+                        <span className="font-medium">
+                          {selectedJob.teamName}
+                        </span>
+                      </>
+                    ) : (
+                      <span>-</span>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.time')}
+                  </h3>
+                  <p className="text-base font-medium">
+                    {format(new Date(selectedJob.start), 'dd/MM/yyyy HH:mm')} -
+                    {format(new Date(selectedJob.end), ' HH:mm')}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.client')}
+                  </h3>
+                  <p className="text-base font-medium">
+                    Cliente {selectedJob.id}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.address')}
+                  </h3>
+                  <p className="text-base font-medium">
+                    Endereço do agendamento {selectedJob.id}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.job_type')}
+                  </h3>
+                  <p className="text-base font-medium">Limpeza Padrão</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.payment_status')}
+                  </h3>
+                  <p className="flex items-center gap-2 text-base">
+                    <span
+                      className={`h-2 w-2 rounded-full ${Number(selectedJob.id) % 2 === 0 ? 'bg-green-500' : 'bg-yellow-500'}`}
+                    ></span>
+                    <span className="font-medium">
+                      {Number(selectedJob.id) % 2 === 0
+                        ? t('Schedule.paid')
+                        : t('Schedule.pending')}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {selectedJob.status === 'CANCELLED' && (
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">
+                    {t('Schedule.cancel_reason')}
+                  </h3>
+                  <p className="text-base font-medium">
+                    Cliente solicitou cancelamento
+                  </p>
+                </div>
+              )}
+
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  {t('Schedule.other_information')}
+                </h3>
+                <p className="text-base">
+                  {Number(selectedJob.id) % 2 === 0
+                    ? 'Cliente solicitou atenção especial na cozinha e banheiros.'
+                    : 'Sem informações adicionais.'}
+                </p>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsJobModalOpen(false)}>
+              {t('Schedule.close')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
