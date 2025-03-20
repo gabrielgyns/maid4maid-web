@@ -201,5 +201,24 @@
       "created_at": "Criado em",
       "updated_at": "Atualizado em"
     }
+  },
+  "Schedule": {
+    "title": "Agenda",
+    "schedule": "Agenda",
+    "month": "Mês",
+    "week": "Semana",
+    "day": "Dia",
+    "today": "Hoje",
+    "new_job": "Novo Agendamento",
+    "job_details": "Detalhes do Agendamento",
+    "no_events": "Nenhum agendamento para este período",
+    "team_filter": "Filtrar por equipe",
+    "all_teams": "Todas as Equipes",
+    "status": {
+      "scheduled": "Agendado",
+      "in_progress": "Em Andamento",
+      "completed": "Concluído",
+      "cancelled": "Cancelado"
+    }
   }
 }

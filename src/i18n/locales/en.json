@@ -203,5 +203,24 @@
       "created_at": "Created At",
       "updated_at": "Updated At"
     }
+  },
+  "Schedule": {
+    "title": "Schedule",
+    "schedule": "Schedule",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "today": "Today",
+    "new_job": "New Job",
+    "job_details": "Job Details",
+    "no_events": "No events for this period",
+    "team_filter": "Filter by team",
+    "all_teams": "All Teams",
+    "status": {
+      "scheduled": "Scheduled",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   }
 }
