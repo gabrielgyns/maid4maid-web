@@ -63,7 +63,11 @@ export default function FormSelectInput({
             </FormControl>
             <SelectContent>
               {options.map(({ id, name }) => (
-                <SelectItem key={id} value={id}>
+                <SelectItem
+                  key={id}
+                  value={id}
+                  className="cursor-pointer hover:bg-accent hover:text-accent-foreground"
+                >
                   {transformConstant(name)}
                 </SelectItem>
               ))}
