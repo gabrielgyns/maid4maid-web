@@ -315,7 +315,9 @@ const eventStatusColors = {
   IN_PROGRESS: '#f39c12',
   COMPLETED: '#2ecc71',
   CANCELLED: '#e74c3c',
-};
+} as const;
+
+type JobStatus = keyof typeof eventStatusColors;
 
 export interface ScheduleCalendarProps {
   onJobSelect?: (jobId: string) => void;
@@ -436,21 +438,33 @@ export function ScheduleCalendar({
       extendedProps: {
         teamName: job.teamName,
         status: job.status,
+        statusColor: eventStatusColors[job.status],
       },
     })),
     eventClick: handleEventClick,
     select: handleDateSelect,
     eventContent: (info) => {
+      const status = info.event.extendedProps.status as JobStatus;
+      const statusColor = info.event.extendedProps.statusColor as string;
+
       return (
         <div className="overflow-hidden p-1">
           <div className="truncate text-sm font-semibold">
             {info.event.title}
           </div>
-          <div className="truncate text-xs">
-            {info.event.extendedProps.teamName}
-          </div>
-          <div className="text-xs italic">
-            {info.event.extendedProps.status}
+          <div className="flex items-center gap-2">
+            <div className="truncate text-xs">
+              {info.event.extendedProps.teamName}
+            </div>
+            <div
+              className="rounded-sm border border-gray-300 px-1.5 text-xs font-medium"
+              style={{
+                backgroundColor: statusColor,
+                color: 'white',
+              }}
+            >
+              {t(`Schedule.status.${status.toLowerCase()}`)}
+            </div>
           </div>
         </div>
       );
