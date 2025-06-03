@@ -46,7 +46,7 @@ export function AppSidebarFooter() {
           src={user?.avatar_url || undefined}
           alt={user?.full_name}
         />
-        {/* TODO: Below, create a function to extract the initials from a name */}
+        {/* Display the user's initials with getInitialsFromName */}
         <AvatarFallback className="rounded-lg">
           {getInitialsFromName(user?.full_name || 'John Doe')}
         </AvatarFallback>
