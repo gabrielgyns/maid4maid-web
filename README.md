@@ -31,7 +31,7 @@ Front and Back are deployed in cloud and we can test it.
 
 ## Vercel
 
-I'm doing the deploy in Vercel, bur for a few days, it will keep failing, but it will be solved.
+I'm doing the deploy in Vercel, but for a few days, it will keep failing, but it will be solved.
 
 ## Some fast screenshots (SO FAR)
 
