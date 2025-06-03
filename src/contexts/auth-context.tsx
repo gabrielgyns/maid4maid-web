@@ -127,7 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast({
         title: 'Logout',
-        description: t('Logint.logout_success'),
+        description: t('Login.logout_success'),
       });
 
       navigate('/login');
