@@ -95,3 +95,20 @@ export default tseslint.config({
   },
 });
 ```
+
+## Testing
+
+This project uses [Vitest](https://vitest.dev/) together with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for unit tests.
+
+Install dependencies and run the tests with:
+
+```bash
+npm install
+npm test
+```
+
+To open the interactive UI run:
+
+```bash
+npm run test:ui
+```
