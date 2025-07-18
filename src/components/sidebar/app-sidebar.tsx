@@ -34,11 +34,6 @@ const items = [
     icon: Users,
   },
   {
-    title: 'BookMe (This is a test)',
-    url: '/bookme',
-    icon: Users,
-  },
-  {
     title: 'Settings',
     url: '/settings',
     icon: Settings,
