@@ -203,5 +203,66 @@
       "created_at": "Created At",
       "updated_at": "Updated At"
     }
+  },
+  "Schedule": {
+    "title": "Schedule",
+    "schedule": "Schedule",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "today": "Today",
+    "new_job": "New Job",
+    "edit_job": "Edit Job",
+    "new_job_description": "Create a new job by filling out the fields below.",
+    "edit_job_description": "Edit job information.",
+    "job_details": "Job Details",
+    "create_job": "Create Job",
+    "scheduling_info": "Scheduling Information",
+    "job_title": "Job Title",
+    "job_title_placeholder": "E.g. Regular cleaning",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "client_and_address": "Client and Address",
+    "payment": "Payment",
+    "charge_by": "Charge By",
+    "charge_amount": "Charge Amount",
+    "is_paid": "Is Paid?",
+    "additional_info": "Additional Information",
+    "other_information_placeholder": "Special instructions or additional information",
+    "cancel_reason_placeholder": "Reason for cancellation",
+    "no_events": "No events for this period",
+    "team_filter": "Filter by team",
+    "all_teams": "All Teams",
+    "team": "Team",
+    "time": "Time",
+    "close": "Close",
+    "client": "Client",
+    "address": "Address",
+    "job_type": "Job Type",
+    "payment_status": "Payment Status",
+    "paid": "Paid",
+    "pending": "Pending",
+    "cancel_reason": "Cancellation Reason",
+    "other_information": "Additional Information",
+    "charge": {
+      "fixed": "Fixed Amount",
+      "preset_hours": "Preset Hours",
+      "worked_hours": "Worked Hours",
+      "preset_cleaner_hours": "Preset Hours per Cleaner",
+      "worked_cleaner_hours": "Worked Hours per Cleaner"
+    },
+    "status": {
+      "status": "Status",
+      "scheduled": "Scheduled",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "Components": {
+    "CalendarDateTimePicker": {
+      "start_time": "Start Time",
+      "end_time": "End Time"
+    }
   }
 }

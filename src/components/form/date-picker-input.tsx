@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseFormReturn } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 
@@ -19,7 +20,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { cn } from '@/utils';
+import { cn, getDayPickerLocale } from '@/utils';
 
 export function DatePickerInput({
   form,
@@ -30,13 +31,16 @@ export function DatePickerInput({
   label: string;
   name: string;
 }) {
+  const { i18n } = useTranslation();
+  const locale = getDayPickerLocale(i18n.language);
+
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
         <FormItem className="flex flex-col justify-end gap-1">
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="!mt-1.5">{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -45,7 +49,7 @@ export function DatePickerInput({
                   className={cn(
                     'w-[240px] pl-3 text-left font-normal',
                     !field.value && 'text-muted-foreground',
-                    'w-full',
+                    '!mt-0.5 w-full',
                   )}
                 >
                   {field.value ? (
@@ -62,7 +66,7 @@ export function DatePickerInput({
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                initialFocus
+                locale={locale}
               />
             </PopoverContent>
           </Popover>

@@ -1,0 +1,137 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Maid4Maid Frontend Architecture Guide
+
+maid4maid-web/
+├── .cursor/       # Will store our custom rules
+├── src/
+│   ├── components/
+│   │   └── layouts/
+│   │       ├── app-layout.tsx
+│   │       └── auth-layout.tsx
+│   ├── contexts/
+│   │   └── auth-context.tsx
+│   ├── hooks/
+│   │   └── queries/      # React Query hooks
+│   │       ├── use-jobs.ts
+│   │       ├── use-teams.ts
+│   │       └── use-*.ts
+│   ├── pages/
+│   │   ├── dashboard/
+│   │   ├── clients/
+│   │   │   ├── index.tsx     # Main listing page
+│   │   │   └── client-details.tsx  # Form/details page
+│   │   ├── users/
+│   │   └── teams/
+│   ├── routes/
+│   │   ├── public.routes.tsx
+│   │   └── protected.routes.tsx
+│   ├── schemas/          # Type definitions
+│   │   ├── job.types.ts
+│   │   ├── user.types.ts
+│   │   └── *.types.ts
+│   ├── services/         # API services
+│   │   ├── api.service.ts
+│   │   ├── job.service.ts
+│   │   └── *.service.ts
+│   └── stores/           # Zustand stores
+│       ├── organization.store.ts
+│       └── user.store.ts
+└── package.json
+
+## Project Structure
+
+This React application follows a feature-based structure with clear separation of concerns:
+
+- `components/` - Reusable UI components
+- `contexts/` - React context providers
+- `hooks/queries/` - React Query hooks for data fetching
+- `pages/` - Page components organized by resource
+- `routes/` - Route definitions
+- `schemas/` - TypeScript type definitions
+- `services/` - API and business logic services
+- `stores/` - Zustand state stores
+
+## Naming Conventions
+
+- React Query hooks: `use-<resource>.ts` (kebab-case)
+- Services: `<resource>.service.ts` (camelCase)
+- Types: `<resource>.types.ts` (camelCase)
+- Pages: 
+  - `index.tsx` for list views
+  - `<resource>-details.tsx` for forms/details
+
+## Coding Patterns
+
+### Data Fetching
+
+1. Define types in `/schemas/*.types.ts`
+2. Create API service in `/services/*.service.ts`
+3. Implement React Query hooks in `/hooks/queries/use-*.ts`
+4. Use hooks in page components
+
+### Example Flow:
+
+```typescript
+// 1. Define types (schemas/user.types.ts)
+export interface User {
+  id: string;
+  name: string;
+  // ...
+}
+
+// 2. Create service (services/user.service.ts)
+export const getUsers = async (): Promise<User[]> => {
+  return apiService.get('/users');
+};
+
+// 3. Create React Query hook (hooks/queries/use-users.ts)
+export const useUsers = () => {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: () => userService.getUsers(),
+  });
+};
+
+// 4. Use in component (pages/users/index.tsx)
+const { data: users, isLoading } = useUsers();
+```
+
+### Routing
+
+- Public routes in `public.routes.tsx`
+- Protected routes in `protected.routes.tsx`
+- Use lazy loading and Suspense for better performance
+- Include route metadata for breadcrumbs and page titles
+
+### UI Components
+
+- Use Tailwind CSS for styling
+- Use shadcn/ui components
+- Create reusable components in `/components`
+- Follow atomic design principles
+
+### Internationalization
+
+- Use react-i18next for translations
+- Keep translation keys organized by feature
+- Extract all UI text to translation files
+
+## Best Practices
+
+1. Use TypeScript for all new code
+2. Follow React Query best practices for data fetching
+3. Use Zustand for global state management
+4. Implement lazy loading for better performance
+5. Maintain consistent naming conventions
+6. Write unit tests for critical functionality
+
+## When implementing new features, follow these established patterns:
+1. Create types in /schemas
+2. Implement API services in /services
+3. Create React Query hooks in /hooks/queries
+4. Build UI components in /components or /pages
+5. Add routes to the appropriate route file

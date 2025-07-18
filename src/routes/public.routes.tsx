@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router-dom';
 
 import { AuthLayout } from '@/components/layouts/auth-layout';
 import { useAuth } from '@/contexts/auth-context';
@@ -22,7 +22,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-export const publicRoutes = [
+export const publicRoutes: RouteObject[] = [
   {
     path: '/',
     element: <AuthLayout />,

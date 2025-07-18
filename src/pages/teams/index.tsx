@@ -221,6 +221,8 @@ export default function Teams() {
     },
   ];
 
+  // TODO: Add -> Total Clients | Clients with Jobs | Clients without scheduled Jobs
+  // TODO: Maybe a grid 2x2 to the List and a Map with pinned clients?
   return (
     <div className="flex flex-col">
       <div className="mb-4 flex items-center justify-between">
@@ -234,7 +236,7 @@ export default function Teams() {
           type="button"
           disabled={isAtLimit}
         >
-          <PlusCircle className="mr-2 h-4 w-4" /> {t('Teams.add_team')}
+          <PlusCircle className="h-4 w-4" /> {t('Teams.add_team')}
         </Button>
       </div>
 

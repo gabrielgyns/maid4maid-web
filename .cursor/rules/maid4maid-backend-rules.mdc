@@ -1,0 +1,243 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# crmaideasy Backend Architecture Guide
+
+maid4maid-api/
+├── .cursor/       # Will store our custom rules
+├── dist/          # Compiled output
+├── docs/          # Documentation
+├── node_modules/  # Dependencies
+├── prisma/        # Prisma ORM schema and migrations
+├── src/
+│   ├── modules/   # Feature modules
+│   │   ├── users/
+│   │   │   ├── dto/        # Data Transfer Objects
+│   │   │   ├── entities/   # Domain entities
+│   │   │   ├── users.controller.ts
+│   │   │   ├── users.service.ts
+│   │   │   └── users.module.ts
+│   │   ├── auth/
+│   │   └── clients/
+│   ├── common/    # Shared code
+│   │   ├── decorators/
+│   │   ├── filters/
+│   │   ├── guards/
+│   │   ├── interceptors/
+│   │   └── pipes/
+│   ├── config/    # Configuration
+│   ├── app.module.ts
+│   └── main.ts
+├── test/          # Testing
+├── .env           # Environment variables
+├── .env.docker    # Docker environment variables
+├── docker-compose.yml
+├── jest.config.ts
+├── nest-cli.json
+├── package.json
+├── tsconfig.json
+└── tsconfig.build.json
+
+## Project Structure
+
+This NestJS application follows a modular architecture with clear separation of concerns:
+
+- `src/modules/` - Feature modules organized by domain
+- `src/common/` - Shared utilities, decorators, filters, etc.
+- `src/config/` - Application configuration
+- `prisma/` - Database schema and migrations
+
+## Technology Stack
+- NestJS as the framework
+- TypeScript for type safety
+- Prisma as the ORM
+- Jest for testing
+- Docker for containerization
+- ESLint and Prettier for code styling
+
+## NestJS Module Organization
+
+Each module follows a consistent structure:
+
+modules/resource-name/
+├── dto/ # Data Transfer Objects
+│ ├── create-resource.dto.ts
+│ ├── update-resource.dto.ts
+│ └── response-resource.dto.ts
+├── entities/ # Domain entities
+│ └── resource.entity.ts
+├── resource-name.controller.ts # HTTP endpoints
+├── resource-name.service.ts # Business logic
+└── resource-name.module.ts # Module definition
+
+
+## Coding Patterns
+
+### Module Definition
+
+```typescript
+@Module({
+  imports: [/* Dependencies */],
+  controllers: [ResourceNameController],
+  providers: [ResourceNameService],
+  exports: [ResourceNameService], // If needed by other modules
+})
+export class ResourceNameModule {}
+```
+
+### Controller Pattern
+
+```typescript
+@Controller('resource-name')
+export class ResourceNameController {
+  constructor(private readonly resourceNameService: ResourceNameService) {}
+
+  @Get()
+  findAll(): Promise<ResourceEntity[]> {
+    return this.resourceNameService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<ResourceEntity> {
+    return this.resourceNameService.findOne(id);
+  }
+
+  @Post()
+  create(@Body() createResourceDto: CreateResourceDto): Promise<ResourceEntity> {
+    return this.resourceNameService.create(createResourceDto);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string, 
+    @Body() updateResourceDto: UpdateResourceDto
+  ): Promise<ResourceEntity> {
+    return this.resourceNameService.update(id, updateResourceDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string): Promise<void> {
+    return this.resourceNameService.remove(id);
+  }
+}
+```
+
+### Service Pattern
+
+```typescript
+@Injectable()
+export class ResourceNameService {
+  constructor(private prisma: PrismaService) {}
+
+  async findAll(): Promise<ResourceEntity[]> {
+    return this.prisma.resource.findMany();
+  }
+
+  async findOne(id: string): Promise<ResourceEntity> {
+    const resource = await this.prisma.resource.findUnique({
+      where: { id },
+    });
+    
+    if (!resource) {
+      throw new NotFoundException(`Resource with ID ${id} not found`);
+    }
+    
+    return resource;
+  }
+
+  async create(createResourceDto: CreateResourceDto): Promise<ResourceEntity> {
+    return this.prisma.resource.create({
+      data: createResourceDto,
+    });
+  }
+
+  async update(
+    id: string, 
+    updateResourceDto: UpdateResourceDto
+  ): Promise<ResourceEntity> {
+    return this.prisma.resource.update({
+      where: { id },
+      data: updateResourceDto,
+    });
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.prisma.resource.delete({
+      where: { id },
+    });
+  }
+}
+```
+
+### DTO Pattern
+
+```typescript
+// create-resource.dto.ts
+export class CreateResourceDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+}
+
+// update-resource.dto.ts
+export class UpdateResourceDto extends PartialType(CreateResourceDto) {}
+```
+
+## Database Access
+
+- Use Prisma client for database operations
+- Define models in `prisma/schema.prisma`
+- Create migrations with `npx prisma migrate dev`
+
+## Authentication and Authorization
+
+- JWT-based authentication
+- Route guards for access control
+- Decorators for role-based permissions
+
+## Error Handling
+
+- Use NestJS built-in exceptions
+- Create custom exception filters for specific error cases
+- Consistent error response format
+
+## Validation
+
+- Use class-validator with DTOs
+- Create custom validation pipes as needed
+
+## Testing
+
+- Unit tests for services
+- Integration tests for controllers
+- E2E tests for API endpoints
+
+## Best Practices
+
+1. Follow Single Responsibility Principle
+2. Use dependency injection
+3. Document APIs with Swagger
+4. Implement proper error handling
+5. Apply proper validation to all inputs
+6. Write comprehensive tests
+7. Keep services stateless
+8. Use transactions for related database operations
+
+## When implementing new features, follow these steps:
+1. Create a new module or extend an existing one
+2. Define DTOs for input/output validation
+3. Create or update entities as needed
+4. Implement the service with business logic
+5. Create controller endpoints
+6. Update the module definition
+7. Add tests for the new functionality
+

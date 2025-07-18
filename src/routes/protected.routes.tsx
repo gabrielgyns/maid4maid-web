@@ -3,6 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import AppLayout from '@/components/layouts/app-layout';
 import { useAuth } from '@/contexts/auth-context';
+import Schedule from '@/pages/schedule';
 import { RouteMetadata } from '@/schemas/route.types';
 import { useOrganizationStore } from '@/stores/organization.store';
 import { useUserStore } from '@/stores/user.store';
@@ -157,7 +158,27 @@ const teamRoutes = {
   ],
 };
 
-export const protectedRoutes = [
+const scheduleRoutes = {
+  path: 'schedule',
+  children: [
+    {
+      path: '',
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <Schedule />
+        </Suspense>
+      ),
+      handle: {
+        title: 'Schedule',
+        breadcrumbs: [{ label: 'Dashboard', path: '/' }, { label: 'Schedule' }],
+      } as RouteMetadata,
+    },
+  ],
+};
+
+import { RouteObject } from 'react-router-dom';
+
+export const protectedRoutes: RouteObject[] = [
   {
     path: '/',
     element: <ProtectedRoute />,
@@ -180,6 +201,7 @@ export const protectedRoutes = [
           clientsRoutes,
           userRoutes,
           teamRoutes,
+          scheduleRoutes,
           // {
           // 	path: "jobs",
           // 	element: <Jobs />,
