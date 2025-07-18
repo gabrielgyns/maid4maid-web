@@ -1,4 +1,5 @@
-import { CreateJobInput, Job, JobType } from '@/schemas/job.types';
+import { JobFilters } from '@/hooks/queries/use-jobs';
+import { Job, JobForm, JobType } from '@/schemas/job.types';
 
 import api from './api.service';
 
@@ -6,8 +7,8 @@ const BASE_URL = '/jobs';
 const JOB_TYPES_URL = '/job-types';
 
 export const jobService = {
-  async getAll(): Promise<Job[]> {
-    const { data } = await api.get<Job[]>(BASE_URL);
+  async getAll(filters?: JobFilters): Promise<Job[]> {
+    const { data } = await api.get<Job[]>(BASE_URL, { params: filters });
     return data;
   },
 
@@ -16,13 +17,13 @@ export const jobService = {
     return data;
   },
 
-  async create(jobData: CreateJobInput): Promise<Job> {
-    const { data } = await api.post<Job>(BASE_URL, jobData);
+  async create(jobData: Partial<JobForm>): Promise<JobForm> {
+    const { data } = await api.post<JobForm>(BASE_URL, jobData);
     return data;
   },
 
-  async update(id: string, jobData: Partial<Job>): Promise<Job> {
-    const { data } = await api.put<Job>(`${BASE_URL}/${id}`, jobData);
+  async update(id: string, jobData: Partial<JobForm>): Promise<JobForm> {
+    const { data } = await api.put<JobForm>(`${BASE_URL}/${id}`, jobData);
     return data;
   },
 

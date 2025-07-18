@@ -79,11 +79,7 @@ const proactiveTokenRefresh = async (token: string): Promise<void> => {
 
     cookieService.setAuthCookie(access_token);
     cookieService.setRefreshCookie(refresh_token);
-
-    console.log('Token proactively refreshed');
   } catch (error) {
-    console.error('Failed to proactively refresh token:', error);
-
     if (
       axios.isAxiosError(error) &&
       (error.response?.status === 401 || error.response?.status === 403)

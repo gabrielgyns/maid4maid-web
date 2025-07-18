@@ -176,7 +176,9 @@ const scheduleRoutes = {
   ],
 };
 
-export const protectedRoutes = [
+import { RouteObject } from 'react-router-dom';
+
+export const protectedRoutes: RouteObject[] = [
   {
     path: '/',
     element: <ProtectedRoute />,

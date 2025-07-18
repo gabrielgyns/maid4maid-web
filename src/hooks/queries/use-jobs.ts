@@ -1,14 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
 
-import { CreateJobInput, Job } from '@/schemas/job.types';
+import { JobForm, JobStatus } from '@/schemas/job.types';
 import { jobService } from '@/services/job.service';
+
+export interface JobFilters {
+  teamId?: string;
+  status?: JobStatus;
+  dateRange?: {
+    start: Date;
+    end: Date;
+  };
+}
 
 export const JOBS_KEYS = {
   all: ['jobs'] as const,
   lists: () => [...JOBS_KEYS.all, 'list'] as const,
-  list: (filters: Record<string, unknown>) =>
-    [...JOBS_KEYS.lists(), { filters }] as const,
+  list: (filters: JobFilters) => [...JOBS_KEYS.lists(), { filters }] as const,
   details: () => [...JOBS_KEYS.all, 'detail'] as const,
   detail: (id: string) => [...JOBS_KEYS.details(), id] as const,
   types: () => [...JOBS_KEYS.all, 'types'] as const,
@@ -17,10 +24,10 @@ export const JOBS_KEYS = {
 /**
  * Hook to fetch all jobs
  */
-export const useJobs = () => {
+export const useJobs = (filters?: JobFilters) => {
   return useQuery({
-    queryKey: JOBS_KEYS.lists(),
-    queryFn: async () => await jobService.getAll(),
+    queryKey: [...JOBS_KEYS.lists(), { filters }],
+    queryFn: async () => await jobService.getAll(filters),
   });
 };
 
@@ -42,15 +49,9 @@ export const useCreateJob = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateJobInput) => jobService.create(data),
+    mutationFn: (data: Partial<JobForm>) => jobService.create(data),
     onSuccess: async () => {
-      toast.success('Job created successfully');
-      await queryClient.invalidateQueries({ queryKey: JOBS_KEYS.lists() });
-    },
-    onError: (error) => {
-      toast.error(
-        `Failed to create job: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+      await queryClient.invalidateQueries({ queryKey: JOBS_KEYS.all });
     },
   });
 };
@@ -62,16 +63,9 @@ export const useUpdateJob = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Partial<Job>) => jobService.update(id, data),
+    mutationFn: (data: Partial<JobForm>) => jobService.update(id, data),
     onSuccess: async () => {
-      toast.success('Job updated successfully');
-      await queryClient.invalidateQueries({ queryKey: JOBS_KEYS.detail(id) });
-      await queryClient.invalidateQueries({ queryKey: JOBS_KEYS.lists() });
-    },
-    onError: (error) => {
-      toast.error(
-        `Failed to update job: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+      await queryClient.invalidateQueries({ queryKey: JOBS_KEYS.all });
     },
   });
 };
@@ -85,13 +79,7 @@ export const useDeleteJob = () => {
   return useMutation({
     mutationFn: (id: string) => jobService.delete(id),
     onSuccess: async () => {
-      toast.success('Job deleted successfully');
       await queryClient.invalidateQueries({ queryKey: JOBS_KEYS.lists() });
-    },
-    onError: (error) => {
-      toast.error(
-        `Failed to delete job: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
     },
   });
 };

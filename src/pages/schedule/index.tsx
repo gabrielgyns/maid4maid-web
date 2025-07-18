@@ -1,32 +1,70 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DateSelectArg } from '@fullcalendar/core';
+import { CalendarDaysIcon, PlusCircle } from 'lucide-react';
 
-import { ScheduleCalendar } from '@/components/ScheduleCalendar';
+import { Button } from '@/components/ui/button';
+import { useJobs } from '@/hooks/queries/use-jobs';
+import { useTeams } from '@/hooks/queries/use-teams';
+import { Job } from '@/schemas/job.types';
+import { Team } from '@/schemas/team.types';
+
+import { JobCalendar } from './calendar';
+import JobFormSheet from './job-form-sheet';
+import { JobViewModal } from './job-view-modal';
 
 export default function Schedule() {
   const { t } = useTranslation();
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  const handleJobSelect = (jobId: string) => {
-    console.log('Job selecionado:', jobId);
-    // Aqui você pode abrir um modal de detalhes do job ou navegar para página de detalhes
-  };
-
-  const handleDateSelect = (selectInfo: DateSelectArg) => {
-    console.log('Data selecionada:', selectInfo);
-    // Aqui você pode abrir um modal para criar um novo job
-  };
+  const { data: jobs, isLoading: isJobsLoading } = useJobs({
+    teamId: selectedTeam?.id,
+  });
+  const { data: teams, isLoading: isTeamsLoading } = useTeams();
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{t('Schedule.title')}</h1>
-        {/* Aqui você pode adicionar botões de ação, como "Novo Agendamento" */}
+    <div className="flex flex-col">
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="flex items-center text-2xl font-bold">
+          <CalendarDaysIcon className="mr-2 inline h-6 w-6" />
+          {t('Schedule.title')}
+        </h1>
+
+        <JobFormSheet
+          contentTrigger={
+            <Button
+              type="button"
+              disabled={isJobsLoading || isTeamsLoading}
+              className="self-end"
+            >
+              <PlusCircle className="h-4 w-4" /> {t('Schedule.new_job')}
+            </Button>
+          }
+        />
       </div>
 
-      <ScheduleCalendar
-        onJobSelect={handleJobSelect}
-        onDateSelect={handleDateSelect}
+      <JobCalendar
+        jobs={jobs as Job[]}
+        teams={teams as Team[]}
+        selectedTeam={selectedTeam}
+        setSelectedTeam={setSelectedTeam}
+        onJobSelect={(job) => {
+          setSelectedJob(job);
+          setIsViewModalOpen(true);
+        }}
       />
+
+      {selectedJob && (
+        <JobViewModal
+          job={selectedJob}
+          isOpen={isViewModalOpen}
+          onClose={() => {
+            setIsViewModalOpen(false);
+            setSelectedJob(null);
+          }}
+        />
+      )}
     </div>
   );
 }

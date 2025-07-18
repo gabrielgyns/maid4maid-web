@@ -210,7 +210,24 @@
     "day": "Dia",
     "today": "Hoje",
     "new_job": "Novo Agendamento",
+    "edit_job": "Editar Agendamento",
+    "new_job_description": "Crie um novo agendamento preenchendo os campos abaixo.",
+    "edit_job_description": "Edite as informações do agendamento.",
     "job_details": "Detalhes do Agendamento",
+    "create_job": "Criar Agendamento",
+    "scheduling_info": "Informações do Agendamento",
+    "job_title": "Título do Agendamento",
+    "job_title_placeholder": "Ex: Limpeza regular",
+    "start_time": "Horário de Início",
+    "end_time": "Horário de Término",
+    "client_and_address": "Cliente e Endereço",
+    "payment": "Pagamento",
+    "charge_by": "Cobrar por",
+    "charge_amount": "Valor da Cobrança",
+    "is_paid": "Está Pago?",
+    "additional_info": "Informações Adicionais",
+    "other_information_placeholder": "Instruções especiais ou informações adicionais",
+    "cancel_reason_placeholder": "Motivo do cancelamento",
     "no_events": "Nenhum agendamento para este período",
     "team_filter": "Filtrar por equipe",
     "all_teams": "Todas as Equipes",
@@ -225,12 +242,25 @@
     "pending": "Pendente",
     "cancel_reason": "Motivo do Cancelamento",
     "other_information": "Informações Adicionais",
+    "charge": {
+      "fixed": "Valor Fixo",
+      "preset_hours": "Horas Pré-definidas",
+      "worked_hours": "Horas Trabalhadas",
+      "preset_cleaner_hours": "Horas Pré-definidas por Limpador",
+      "worked_cleaner_hours": "Horas Trabalhadas por Limpador"
+    },
     "status": {
       "status": "Status",
       "scheduled": "Agendado",
       "in_progress": "Em Andamento",
       "completed": "Concluído",
       "cancelled": "Cancelado"
+    }
+  },
+  "Components": {
+    "CalendarDateTimePicker": {
+      "start_time": "Hora de Início",
+      "end_time": "Hora de Término"
     }
   }
 }

@@ -146,7 +146,7 @@ export default function Users() {
           type="button"
           disabled={users && users.length >= maxUsers}
         >
-          <PlusCircle className="mr-2 h-4 w-4" /> {t('Users.add_user')}
+          <PlusCircle className="h-4 w-4" /> {t('Users.add_user')}
         </Button>
       </div>
 

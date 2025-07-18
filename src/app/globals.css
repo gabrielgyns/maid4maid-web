@@ -15,3 +15,10 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(107, 114, 128, 0.7);
 }
+
+/* Calendar CSS Variables */
+:root {
+  --event-height: 38px;
+  --event-gap: 2px;
+  --hour-height: 80px;
+}
