@@ -13,7 +13,7 @@ interface MoreJobsPopoverProps {
   jobs: Job[];
   onJobSelect?: (job: Job) => void;
   maxVisible: number;
-  view: CalendarView;
+  view?: CalendarView;
 }
 
 export function MoreJobsPopover({
