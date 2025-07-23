@@ -2,7 +2,7 @@
 
 First I was creating a project with Turbo Repo, but right now it does not make any sense, so Im converting to React in FE and Node in BE in different repos.
 
-This project will have more configs like mock/live server and testing.
+This project will have more setup like MSW for mocking, Testing with Vitest, PWA (first, later a simple mobile app), Integrations, its own design system, etc.
 
 - Dark/Light/System mode enabled.
 - Translations enabled (just need to translate more items)
